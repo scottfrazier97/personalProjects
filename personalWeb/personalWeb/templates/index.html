@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Scott Frazier</title>
+    <!--------------------------->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/slate/bootstrap.min.css"> -->
+    <link rel="stylesheet" type="text/css" href="static\css\style.css">
+    <!--------------------------->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/jeezy@1.13.1/lib/jeezy.min.js"></script>
+    <script type="text/javascript" src="static\js\logic.js"></script>
+
+</head>
+
+<body>
+
+    <section>
+        <div style="background-image: url('ImageLocation');background-size: cover; height: 500px; padding-top:80px; padding-left: 60px;">
+            <img src="static\images\scott.jpg" style="height: 435px; width: 225px; border-radius: 8%; border: 6px solid #ffffff;">
+        </div>
+
+
+        <div class="wave " id="wave1 " style="--i:1; "></div>
+        <div class="wave " id="wave2 " style="--i:2; "></div>
+        <div class="wave " id="wave3 " style="--i:3; "></div>
+        <div class="wave " id="wave4 " style="--i:4; "></div>
+    </section>
+
+    <div class="sec ">
+        <h2>Watery Waves</h2>
+        <p>Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design
+            adventure.Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next
+            high seas design adventure.Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum
+            for your next high seas design adventure.<br><br>Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.Arrr me hearties! Make traditional Latin walk the plank and opt
+            for pirate lorem ipsum for your next high seas design adventure.Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.Arrr me hearties! Make traditional Latin walk the
+            plank and opt for pirate lorem ipsum for your next high seas design adventure.Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.Arrr me hearties! Make traditional
+            Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.<br><br>Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.Arrr me hearties!
+            Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.Arrr
+            me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design
+            adventure.Arrr me hearties! Make traditional Latin walk the plank and opt for pirate lorem ipsum for your next high seas design adventure.<br><br></p>
+    </div>
+
+    <script>
+        let wave1 = document.getElementById('wave1');
+        let wave2 = document.getElementById('wave2');
+        let wave3 = document.getElementById('wave3');
+        let wave4 = document.getElementById('wave4');
+
+        window.addEventListener('scroll', function() {
+            let value = window.scrollY;
+
+            wave1.style.backgroundPositionX = 400 + value * 4 + 'px'
+            wave2.style.backgroundPositionX = 300 + value * -4 + 'px'
+            wave3.style.backgroundPositionX = 200 + value * 2 + 'px'
+            wave4.style.backgroundPositionX = 100 + value * -2 + 'px'
+        })
+    </script>
+</body>
+
+</html>
