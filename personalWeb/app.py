@@ -24,31 +24,6 @@ def home():
     # Return template and data
     return render_template("index.html")
 
-
-# Route to render index.html template
-@app.route("/about")
-def about():
-    # Return template and data
-    return render_template("about.html")
-
-# Route to render index.html template
-@app.route("/glossary")
-def glossary():
-    # Return template and data
-    return render_template("glossary.html")
-
-# Route to render index.html template
-@app.route("/prediction")
-def machine():
-    # Return template and data
-    return render_template("mLearning.html")
-
-# Route to render index.html template
-@app.route("/tableau")
-def tableau():
-    # Return template and data
-    return render_template("tabDash.html")
-
 #main
 if __name__ == "__main__":
     app.run(debug=True)
