@@ -1,6 +1,3 @@
-from random import randrange
-import os
-
 waters = 'Dasani and Ozarka'
 
 people = []
@@ -28,95 +25,13 @@ numTest()
 light_on = True
 print(light_on)
 
-freedom = "AMERICA!"
-is_free_country = True
-while is_free_country:
-    print('America is FREE, That is what I am talking about!', freedom)
-    break
-
-bestCountryEver = [liberty for liberty in freedom]
-print(bestCountryEver)
-
-for freedom in freedom:
-    print(freedom)
-
-for i in range(4):
-    print('*************---------------')
-for x in range(4):
-    print('----------------------------')
-
-yearLiberated = int(1776)
-currentYear = int(input("Enter the current year: "))
-def yearsSince():
-    yearsSince = currentYear - yearLiberated
-    print(f"It has been {yearsSince} years since America gained it's independence from Great Britain!")
-
-    if yearsSince == 300:
-        print("It has been 300 years since America has gained it's independence.")
-    elif yearsSince > 300:
-        print("It has been more than 300 years since America has gained it's indepence from Great Britain.")
-    elif currentYear < 1776:
-        print("Something must have been lost in the shadow realm. QUICK MARTY, WE HAVE TO GO BACK TO THE FUTURE!")
-    else:
-        pass
-yearsSince()
-
-#printing odd numbers up to 100
-def oddEven():
-    for i in range(100):
-        if i % 2:
-            print(i)
-oddEven()
-
-def nameCharCounter():
-    name = str(input('Type your name: '))
-    lettCount = len(name)
-
-    avgLength = 6
-    shorterName = avgLength - lettCount
-    longerName = lettCount - avgLength
-    print("----------|:)|----------")
-    print(f"Your name is {name}, and it is {lettCount} letters long...Don't believe me?! Go ahead and count 'em!")
-
-    if lettCount > avgLength:
-        print(f"Your name is pretty long. To be specific, it is {longerName} letter(s) longer than the average first name length, which is:", avgLength)
-    elif lettCount < avgLength:
-        print(f"Your name is pretty short. To be specific, it is {shorterName} letter(s) shorter than the average first name length, which is:", avgLength)
-    elif lettCount == 6:
-        print(f"Your name is equal to the average first name length, which is:", avgLength)
-    else:
-        pass
-nameCharCounter()
 
 
-play = True
-correctCounter = 0
-playCounter = 0
-while play: 
-    compChoice = randrange(10)
-    userPrompt = int(input("Choose a number between 0 and 10: "))
-    print("=================================")
 
-    if userPrompt == compChoice:
-        correctCounter += 1
-        playCounter += 1
-        print(f"You guessed correctly! You and the computer both chose the number: {compChoice}. Well done!")
-    elif userPrompt != compChoice:
-        playCounter += 1
-        print(f"Sorry! you guessed incorrectly. The computer chose the number: {compChoice}.")
-    else: 
-        print("I do not understand, input a valid number (0-10).")
-    print("=================================")
 
-    print("STATS:")
-    print(f"You have correctly guessed the number {correctCounter} time(s), with a total guess count of {playCounter}.")
-    print("This brings your win ratio to:", correctCounter / playCounter)
-    
-    print("=================================")
-    again=str(input("Do you want to play again, type yes or no?"))
-    if again == "no":
-      play = False
-      break
+
+
+
 
 
 
