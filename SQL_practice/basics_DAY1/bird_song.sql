@@ -35,3 +35,20 @@ from
 bird_song
 group by country;
 
+--***NUMBER OF ROWS COUNTER***
+select count(*)
+from bird_song
+
+--***USING THE BETWEEN KEYWORD***
+select * from bird_song
+where latitude between 52 and 55;
+
+--*****WILDCARD %, more useful than the _ Wildcard*****
+--Using % will substitute zero, one, or multiple characters in a query. e.g.: Com% for Common Swift, Common Cuckoo
+select * from bird_song
+where english_name LIKE 'Com%';
+
+--*****WILDCARD _*****
+--Returns one and only one character in a query, e.g.: The S in Spain down below.
+Select * from bird_song
+where country LIKE '_pain'
