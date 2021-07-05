@@ -24,7 +24,7 @@ while play:
     print("This brings your win ratio to:", correctCounter / playCounter)
     
     print("=================================")
-    again=str(input("Do you want to play again, type yes or no?"))
+    again = str(input("Do you want to play again, type yes or no?"))
     if again == "no":
       play = False
       break
