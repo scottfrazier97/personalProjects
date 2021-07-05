@@ -35,3 +35,4 @@ where rental_rate = (
 	max(rental_rate)
 	from film
 )
+
