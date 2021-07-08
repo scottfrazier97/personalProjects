@@ -1,3 +1,12 @@
+-- 1st Normalization
+Raw data:                                               First Normalization:
+Family      Children        --Normalization--           Family          Children      
+Smiths      Chris, Abby, Susy      ---->                Smiths          Abby
+Jones       Alex, Indiana, Henry        ---->           Smiths          Chris
+                                                        Smiths          Susy
+                                                        Jones           Alex
+                                                        Jones           Indiana
+                                                        Jones           Henry
        
 -- Create owners table and insert values
 CREATE TABLE owners (
