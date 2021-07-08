@@ -7,7 +7,19 @@ Jones       Alex, Indiana, Henry        ---->           Smiths          Chris
                                                         Jones           Alex
                                                         Jones           Indiana
                                                         Jones           Henry
-       
+
+-- 2nd Normalization
+Data in 1NF:
+--Family:   Children:
+    Smiths    Abby                                  Family Table            Child Table
+    Smiths    Chris         ----->             family_id    family      family_id   Children
+    Smiths    Susy  --2NF Normalization-->      1           Smiths      1           Chris
+    Jones     Alex          ----->              2           Jones       1           Abby
+    Jones     Indiana                                                   1           Susy
+    Jones     Henry                                                     2           Alex
+                                                                        2           Indiana
+                                                                        2           Henry
+----------------------------------------           
 -- Create owners table and insert values
 CREATE TABLE owners (
   id INT PRIMARY KEY NOT NULL,
