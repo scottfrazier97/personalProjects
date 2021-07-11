@@ -27,6 +27,11 @@ print(light_on)
 
 #LOOPING through a list
 candies = ["Sour Patch Kids", "Swedish Fish", "Reeses", "Sour Skittles", "Kazoozles"]
+print(candies)
+
+#adding an item to a specific spot within list
+additional_candies = candies.insert(5, "LemonHeads")
+
 candy_cart = []
 allowance = 3
 
@@ -34,12 +39,19 @@ for candy in candies:
     number = candies.index(candy)
     print(f"|{number}| {candy}")
 
+#removing last element of a list
+# candies.pop()
+# print(candies)
+
+#removing specific item using index from list
+# candies.pop(3)
+# print(candies)
+
 currently_spent = 0
 while currently_spent < allowance:
     currently_spent = currently_spent + 1
-    candy_prompt = int(input("Which candy would you like? "))
+    candy_prompt = int(input("Which candy would you like? Enter a number: "))
     candy_cart.append(candies[candy_prompt])
-    
 print(f"You chose {candy_cart} as your candies. Enjoy!")
 
 
