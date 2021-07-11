@@ -25,6 +25,7 @@ while play:
     
     print("=================================")
     again = str(input("Do you want to play again, type yes or no?"))
+    print("=================================")
     if again == "no":
       play = False
       break
