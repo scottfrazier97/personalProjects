@@ -26,7 +26,7 @@ light_on = True
 print(light_on)
 
 #LOOPING through a list
-candies = ["Sour Patch Kids", "Swedish Fish", "Reeses", "Sour Skittles", "Kazoozles"]
+candies = ["Sour Patch Kids", "Swedish Fish", "Reeses", "Sour Skittles", "Kazoozles", "Hershey's Chocolate", "Kit Kats"]
 print(candies)
 
 #adding an item to a specific spot within list
