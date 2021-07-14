@@ -25,10 +25,10 @@ pokemon_type = {
 
 #checking if the user wants more information for the pokemon
 for x in pokemon_type:
-    continue_game_prompt = str(input("Would you info on the other types of Pokemon? If so, enter their type. If not, write and enter continue. "))
 
     if basic_info == "Fire" or basic_info == "fire":
         print(pokemon_type["fire_description"])
+        print("---")            
     elif basic_info == "Water" or basic_info == "water":
         print(pokemon_type["water_description"])
     elif basic_info == "Grass" or basic_info == "grass":
@@ -38,6 +38,7 @@ for x in pokemon_type:
     else: 
         print("Someting must have gone wrong, SORRY! Make sure you read the instructions carefully!")
     break
+
 print("----------------")
 
 #list comprehension
