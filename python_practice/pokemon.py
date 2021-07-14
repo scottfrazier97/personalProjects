@@ -28,8 +28,7 @@ for x in pokemon_type:
 
     if basic_info == "Fire" or basic_info == "fire":
         print(pokemon_type["fire_description"])
-        print("---")
-        continue
+        print("------")
     elif basic_info == "Water" or basic_info == "water":
         print(pokemon_type["water_description"])
     elif basic_info == "Grass" or basic_info == "grass":
@@ -38,14 +37,14 @@ for x in pokemon_type:
         print("OK, please continue to pick your pokemon!")
     else: 
         print("Someting must have gone wrong, SORRY! Make sure you read the instructions carefully!")
-        
-        for y in pokemon_type:
-            continue_prompt = str(input("Would you like info on the other types of Pokemon? If so, enter their type. If not, write and enter continue. "))
-
-            if continue_prompt == "Water" or continue_prompt == "water" or continue_prompt == "Grass" or continue_prompt == "grass":
+    
+    for y in pokemon_type:
+            continue_prompt = str(input("Would you like info on the other types of Pokemon? If so, write and enter yes. If not, write and enter continue. "))
+            if basic_info == "Fire" and continue_prompt == "Yes" or continue_prompt == "yes":
                 print(pokemon_type["water_description"])
-
-
+                print("--")
+                print(pokemon_type["grass_description"])
+                
 print("----------------")
 
 #list comprehension
