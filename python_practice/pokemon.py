@@ -48,12 +48,6 @@ pokemon_type = {
 "water_description": "Water-types are one of the most common types of pokemon, and will be very useful against fire-types."
 }
 
-on = True
-while on:
-    if age > 10:
-        oddEven()
-        break
-
 #checking if the user wants more information for the pokemon
 for x in pokemon_type:
 
@@ -69,25 +63,24 @@ for x in pokemon_type:
     else: 
         print("Someting must have gone wrong, SORRY! Make sure you read the instructions carefully!")
     
-for y in pokemon_type:
-    continue_prompt = str(input("Would you like info on the other types of Pokemon? If so, write and enter yes. If not, write and enter no. "))
-    if basic_info == "Fire" or basic_info == "fire" and continue_prompt == "Yes" or continue_prompt == "yes":
-        print(pokemon_type["water_description"])
-        print("--")
-        print(pokemon_type["grass_description"])
-    elif basic_info == "Water" or basic_info == "water" and continue_prompt == "Yes" or continue_prompt == "yes":
-        print(pokemon_type["fire_description"])
-        print("--")
-        print(pokemon_type["grass_description"])
-    elif basic_info == "Grass" or basic_info == "grass" and continue_prompt == "Yes" or continue_prompt == "yes":
-        print(pokemon_type["fire_description"])
-        print("--")
-        print(pokemon_type["water_description"])
-    elif continue_prompt == "No" or continue_prompt == "no":
-        extra_info == False
-        break
-    else: 
-        print("Someting must have gone wrong, SORRY! Make sure you read the instructions carefully!")
+    for y in pokemon_type:
+        continue_prompt = str(input("Would you like info on the other types of Pokemon? If so, write and enter yes. If not, write and enter no. "))
+        if basic_info == "Fire" or basic_info == "fire" and continue_prompt == "Yes" or continue_prompt == "yes":
+            print(pokemon_type["water_description"])
+            print("--")
+            print(pokemon_type["grass_description"])
+        elif basic_info == "Water" or basic_info == "water" and continue_prompt == "Yes" or continue_prompt == "yes":
+            print(pokemon_type["fire_description"])
+            print("--")
+            print(pokemon_type["grass_description"])
+        elif basic_info == "Grass" or basic_info == "grass" and continue_prompt == "Yes" or continue_prompt == "yes":
+            print(pokemon_type["fire_description"])
+            print("--")
+            print(pokemon_type["water_description"])
+        elif continue_prompt == "No" or continue_prompt == "no":
+            break
+        else: 
+            print("Someting must have gone wrong, SORRY! Make sure you read the instructions carefully!")
 
 print("----------------")
 
