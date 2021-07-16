@@ -4,3 +4,9 @@ def oddEven():
             print(i)
 oddEven()
 
+age = 24
+on = True
+while on:
+    if age > 10:
+        oddEven()
+        break
