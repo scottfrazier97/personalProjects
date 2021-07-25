@@ -18,15 +18,16 @@ CREATE TABLE bird_song(
 SELECT * FROM bird_song;
 
 --***DROP ENTIRE TABLE***
--- DROP TABLE bird_song;
+DROP TABLE bird_song;
 
 --***PULL DISTINCT DATA BASED ON COLUMN***
--- -- SELECT DISTINCT 
--- -- country
--- -- from 
--- -- bird_song
--- -- -- ***ORDER ALPHABETICALLY***
--- -- -- order by country asc
+SELECT DISTINCT 
+country
+from 
+bird_song
+
+-- ***ORDER ALPHABETICALLY***
+order by country asc
 
 --***COUNT OF SPECIFIC DATA***
 select country,
