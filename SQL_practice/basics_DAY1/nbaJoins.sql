@@ -60,8 +60,8 @@ SELECT * FROM seasons_stats;
 select * from seasons_stats
 
 --***FIXING INDEXING***
--- -- update seasons_stats
--- -- set player_id = player_id + 1;
+update seasons_stats
+set player_id = player_id + 1;
 
 
 --***BASIC JOINING OF TWO CSVs***
