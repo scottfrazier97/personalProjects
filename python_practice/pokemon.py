@@ -5,9 +5,9 @@ pokemon_starter_types = ["Fire", "Water", "Grass"]
 
 #pokemon-types and names, dictionary
 beginning_pokemon = {
-    "Charmander": "Fire",
-    "Squirtle": "Water",
-    "Bulbasaur": "Grass"}    
+    "Fire": "Charmander",
+    "Water": "Squirtle",
+    "Grass": "Bulbasaur"}    
 
 #beginning messages
 ###### Added function to print cleaner line
@@ -136,8 +136,10 @@ while done == False:
             continue
 
 #list comprehension
-# print("Here are your choices for starter pokemon: ")
+print("Here are your choices for starter pokemon: ")
 # print([pokemon for pokemon in pokemon_starter_types])
+for k, v in beginning_pokemon.items():
+    print(f"{k}: {v}")
 
 currently_playing = True
 #asking the user which type of pokemon they would like
