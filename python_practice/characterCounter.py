@@ -1,11 +1,11 @@
 def nameCharCounter():
-    name = str(input('Type your name: '))
+    name = str(input('Type your first name: '))
     lettCount = len(name)
 
     avgLength = 6
     shorterName = avgLength - lettCount
     longerName = lettCount - avgLength
-    print("----------|:)|----------")
+    print("-" * len(name))
     print(f"Your name is {name}, and it is {lettCount} letters long...Don't believe me?! Go ahead and count 'em!")
 
     if lettCount > avgLength:

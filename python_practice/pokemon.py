@@ -142,6 +142,24 @@ for k, v in beginning_pokemon.items():
     print(f"{k}: {v}")
 
 currently_playing = True
-#asking the user which type of pokemon they would like
-# ------print(beginning_pokemon)
-# ------user_choice = str(input("Which one would you like to accompany you on your journey? "))
+#asking the user which pokemon they would like
+user_choice = (input_uppercase("Which one would you like to accompany you on your journey? ", str))
+while currently_playing == True:
+    if user_choice == "CHARMANDER":
+        print("You have chosen Charmander! ")
+    elif user_choice == "SQUIRTLE":
+        print("You have chosen Squirtle!")
+    elif user_choice == "BULBASAUR": 
+        print("You have chosen Bulbasaur!")
+    else:
+        print("Someting must have gone wrong, SORRY! Make sure you read the instructions carefully!")
+        break
+
+    if currently_playing == True:
+        print(f"It is time to begin your official journey into the world of Pokemon battles and adventure. \nGet ready!")
+        break
+    else:
+        currently_playing == False
+        break
+
+    
