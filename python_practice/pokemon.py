@@ -156,7 +156,7 @@ while currently_playing == True:
         break
 
     if currently_playing == True:
-        print(f"It is time to begin your official journey into the world of Pokemon battles and adventure. \nGet ready!")
+        print(f"It is time to begin your official journey into the world of Pokemon battles and adventure with your {user_choice}. \nGet ready!")
         break
     else:
         currently_playing == False
