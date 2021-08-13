@@ -53,13 +53,3 @@ while currently_spent < allowance:
     candy_prompt = int(input("Which candy would you like? Enter a number: "))
     candy_cart.append(candies[candy_prompt])
 print(f"You chose {candy_cart} as your candies. Enjoy!")
-
-
-
-
-
-
-
-
-
-
