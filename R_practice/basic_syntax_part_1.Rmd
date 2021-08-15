@@ -1,30 +1,125 @@
----
-title: "basic_syntax_part_1"
-author: "Scott Frazier"
-date: "8/15/2021"
-output: html_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+> x = 10
+> class(X)
+Error: object 'X' not found
+> y = as.integer(10)
+> class(y)
+[1] "integer"
+> 
+> 
+> 
+> 
+> class(X)
+Error: object 'X' not found
+> z = 10 + 0i
+> class(z)
+[1] "complex"
+> # The above text shows imaginary part of a complex number
+> j = sqrt(-1)
+Warning message:
+In sqrt(-1) : NaNs produced
+> j = sqrt(as.complex(-1))
+> j
+[1] 0+1i
+> u = TRUE
+> v = FALSE
+> class(u)
+[1] "logical"
+> u&v
+[1] FALSE
+> u|v
+[1] TRUE
+> !v
+[1] TRUE
+> fname = "Scott"
+> lname = "Frazier"
+> paste(fname, lname)
+[1] "Scott Frazier"
+> #Vectors work the same way as lists do in Python, but there are some differences
+> #Vectors are denoted by a "c" in R
+> vec = c(10,5,7)
+> class(vec)
+[1] "numeric"
+> length(vec)
+[1] 3
+> #R wants all vectors to have the same data type, unlike python
+> str_vec = c("a", "b", "c")
+> num_vec = c(10, 5, 7)
+> comb_vec = c(str_vec, num_vec)
+> comb_vec
+[1] "a"  "b"  "c"  "10" "5"  "7" 
+> comb_vec[1]
+[1] "a"
+> comb_vec]0
+Error: unexpected ']' in "comb_vec]"
+> comb_vec[0]
+character(0)
+> #Removing elements from vector
+> comb_vec[-2]
+[1] "a"  "c"  "10" "5"  "7" 
+> 
+> series = c(1.0, 5.6, 3600)
+> names(series) = c("Day", "Temp", "Sec")
+> series
+   Day   Temp    Sec 
+   1.0    5.6 3600.0 
+> 
+> 
+> #conditionals and loops
+> if (1==0) {}
+> if (1==0) {print(1)}
+> 
+> x = 1:10
+> z = C()
+Error in nlevels(object) : argument "object" is missing, with no default
+> x = 1:10 
+> z = c()
+> for(i in seq(x)) {
++     if(x[i] < 5) {
++         z = c(z, x[i] -1)
++     } else {
++         z = c(z, x[i] / 2)
++     }
++ }
+> 
+> z
+ [1] 0.0 1.0 2.0 3.0 2.5 3.0 3.5 4.0 4.5 5.0
+> 
+> myfct = function(x1, x2 = 5) {
++     z1 = x1/x1
++     z2 = x2*x2
++     myvec = c(z1, z2)
++     return(myvec)
++ }
+> myfct(x1=2, x2=5)
+[1]  1 25
+> myfct(2, 5)
+[1]  1 25
+> myfct(x2=5, x1=2)
+[1]  1 25
+> myfct2 = function(x1=5, opt_arg) {
++     if(missing(opt_arg)) { #missing?
++         z1 = 1:10
++     } else {
++         z1 = opt_arg
++     }
++     cat("my function returns: ", "\n")
++     return(z1/x1)
++ }
+> myfct2
+function(x1=5, opt_arg) {
+    if(missing(opt_arg)) { #missing?
+        z1 = 1:10
+    } else {
+        z1 = opt_arg
+    }
+    cat("my function returns: ", "\n")
+    return(z1/x1)
+}
+> 
+> save.image("C:/Users/scott/Desktop/practice/personalProjects/R_practice/basic_syntax_part_1.RData")
+> 
+> 
+> x = 5
+> x2 = x * x
+> x2
+[1] 25
