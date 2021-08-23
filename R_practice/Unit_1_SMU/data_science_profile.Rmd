@@ -1,0 +1,19 @@
+---
+title: "data_science_profile"
+author: "Scott Frazier"
+date: "8/22/2021"
+output: html_document
+---
+
+proficiency_level = c(2,1.5,2,2.5,3,3,2)
+subjects = c("Data Viz","Machine Learning","Math","Statistics","Computer Science","Communication","Domain Expertise")
+
+df = data.frame(Proficiency=proficiency_level, Subject=subjects)
+df
+
+library(RColorBrewer)
+library(ggplot2)
+coul = brewer.pal(5, "Blues") 
+
+barplot(df$Proficiency, names.arg = df$Subject, xlab = "Subject", ylab = "Proficiency Level", ylim = c(0,4), col = coul, main = "Data Science Profile")
+
