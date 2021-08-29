@@ -1,0 +1,25 @@
+```{r}
+install.packages("plotly")
+library(plotly)
+```
+
+mpg = read.csv(file.choose(), header=T)
+
+p = mpg %>% 
+ggplot(mapping = aes(x = hwy, y = cty)) + 
+geom_point(position = "jitter") + ggtitle("City MPG v. Highway MPG") + theme_excel()
+ 
+ggplotly(p)
+
+p = mpg[mpg$class == "compact",] %>% 
+ggplot(aes(x = cty, fill = drv)) + 
+geom_histogram(color = "blue") 
+ggplotly(p)
+
+#3D plots with plotly
+p <- plot_ly(mpg, x = ~cty, y = ~hwy, z = ~displ, color = ~drv) %>%
+   add_markers() %>%
+   layout(scene = list(xaxis = list(title = 'City MPG'),
+                      yaxis = list(title = 'Displacement'),
+                      zaxis = list(title = 'Highway MPG')))
+p
