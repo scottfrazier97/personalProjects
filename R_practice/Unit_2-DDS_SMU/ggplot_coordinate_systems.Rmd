@@ -1,0 +1,53 @@
+mpg = read.csv(file.choose(), header=T)
+
+```{r}
+#original graph
+mpg %>% ggplot(aes(x=class, fill=class)) + geom_bar()
+
+#flipped graph^
+mpg %>% ggplot(aes(x=class, fill=class)) + geom_bar() + coord_flip()
+
+#coord_polar, same info, just vizzed differently
+mpg %>% ggplot(aes(x=class, fill=class)) + geom_bar() + coord_polar()
+
+```
+```{r}
+#MAPS
+install.packages("maps")
+library(maps)
+library(tidyverse)
+
+usa = map_data("usa")
+p = ggplot() + 
+  geom_polygon(data = usa, aes(x = long, y = lat, group = group, fill = "red", color = "black")) + 
+  coord_quickmap()
+p
+
+#adding dallas to the map
+Dallas = tibble(
+  long = c(-96.7970),
+  lat = c(32.7767),
+  names = c("Dallas")) 
+
+p + geom_point(data = Dallas, aes(x = long, y = lat), shape = 21, color = "black", fill = "yellow", size = 5) +
+  geom_text(data = Dallas, aes(x = long, y = lat, label = names), hjust = 0, nudge_x = 1, color = "white")
+
+#italy
+italy = map_data("italy")
+
+p2 = ggplot() + 
+  geom_polygon(data = italy, aes(x = long, y = lat, group = group, fill = "red", color = "black")) + 
+  coord_quickmap()
+p2
+
+lake_como = tibble(
+  long = c(9.2572),
+  lat = c(46.0160),
+  names = c("Lake Como")) 
+
+p2 + geom_point(data = lake_como, aes(x = long, y = lat), shape = 21, color = "black", fill = "yellow", size = 5) +
+  geom_text(data = lake_como, aes(x = long, y = lat, label = names), hjust = 0, nudge_x = 1, color = "white")
+
+?map_data
+
+```
