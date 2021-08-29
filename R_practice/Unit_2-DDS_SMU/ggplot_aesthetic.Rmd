@@ -1,0 +1,50 @@
+---
+title: "Unit_2_basic_vizzes"
+author: "Scott Frazier"
+date: "8/27/2021"
+output: html_document
+---
+```{r}
+library(ggplot2)
+library(magrittr)
+
+```
+mpg = read.csv(file.choose(), header = T)
+
+```{r echo=T}
+#scatterplots
+plot(mpg$hwy,mpg$city, pch = 20, main = "CityMPG v. HighwayMPG", ylab="City MPG", xlab="Highway MPG")
+```
+
+
+``` {r ggplot, echo=T}
+mpg %>% ggplot(aes(x = hwy, y = cty)) + geom_point()+ggtitle("City v. Hwy MPG")
+mpg %>% ggplot(aes(x=class, y=cty)) + geom_boxplot()
+mpg %>% ggplot(aes(x=class)) + geom_bar()
+
+```
+```{r}
+#adding proportions to the graph
+mpg %>% ggplot(mapping = aes(x=class, y=..prop.., group=1)) + geom_bar()
+
+#adding color based on factor within data set
+mpg %>% ggplot(aes(x=hwy, y=cty, color=mpg$drv)) + geom_point()
+
+#adding color to all data points
+mpg %>% ggplot(aes(x=hwy, y=cty)) + geom_point(color="blue")
+
+#adding multiple values and colors to bar plot
+mpg[mpg$class == "midsize",] %>% ggplot(aes(x=cty, fill=drv)) + geom_histogram(color="black")
+
+#doing the same as above, but in boxplot form
+mpg %>% ggplot(aes(x=class, y=cty, fill=drv)) + geom_boxplot(color="black")
+
+#working with the sizing of the points
+mpg %>% ggplot(aes(x=hwy, y=cty, color=mpg$drv, size=mpg$displ)) + geom_point()
+
+#doing the same as above, but with alpa (transparency)
+mpg %>% ggplot(aes(x=hwy, y=cty, color=mpg$drv, size=mpg$displ, alpha=mpg$displ)) + geom_point()
+
+
+
+```

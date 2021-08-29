@@ -15,19 +15,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #df = read.table("/Users/bivin/Desktop/OLD COMPUTER ARCHIVES/KadAfrica/MSDS/DDS/MSDS 6306/Unit 5/yob2016.txt",stringsAsFactors = FALSE,header = FALSE,sep = ";")
 # sample size per sample for 1st distribution
-n1 = 10
+n1 = 50
 
 # sample size per sample for 2nd distribution (we will compare these distribuions)
 n2 = 100 
 
 #number of samples and thus number of xbars we will generate.
-simulations = 10000000
+simulations = 10000
 
 # mean parameter for use with normal distribuions
-mu = 0
+mu = 2
 
 # standard deviation parameter for use with normal distribuions
-sigma = 1
+sigma = 2
 
 fls_hist = rchisq(simulations, df = 2)
 
@@ -44,7 +44,7 @@ xbar_holder2 = numeric(simulations) # This will hold all the sample means for th
 ```
 
 ## Simulate and Store
-Generate 1000 samples each of size 10 and find the mean of each sample.  Then store each mean in the xbar_holder vector.
+Generate 10000 samples each of size 10 and find the mean of each sample.  Then store each mean in the xbar_holder vector.
 
 ```{r}
 for (i in 1:simulations)
