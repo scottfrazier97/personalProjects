@@ -42,7 +42,7 @@ mpg %>% ggplot(aes(x=class, y=cty, fill=drv)) + geom_boxplot(color="black")
 #working with the sizing of the points
 mpg %>% ggplot(aes(x=hwy, y=cty, color=mpg$drv, size=mpg$displ)) + geom_point()
 
-#doing the same as above, but with alpa (transparency)
+#doing the same as above, but with alpha (transparency)
 mpg %>% ggplot(aes(x=hwy, y=cty, color=mpg$drv, size=mpg$displ, alpha=mpg$displ)) + geom_point()
 
 
