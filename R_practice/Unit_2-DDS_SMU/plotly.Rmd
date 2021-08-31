@@ -1,25 +1,18 @@
 ```{r}
-install.packages("plotly")
-library(plotly)
+library(ggplot2)
+library(tidyverse)
 ```
 
-mpg = read.csv(file.choose(), header=T)
+basketball = read.csv(file.choose(), header=T)
 
-p = mpg %>% 
-ggplot(mapping = aes(x = hwy, y = cty)) + 
-geom_point(position = "jitter") + ggtitle("City MPG v. Highway MPG") + theme_excel()
- 
-ggplotly(p)
+head(basketball)
 
-p = mpg[mpg$class == "compact",] %>% 
-ggplot(aes(x = cty, fill = drv)) + 
-geom_histogram(color = "blue") 
-ggplotly(p)
+```{r}
+#question 1
+basketball %>% ggplot(mapping = aes(x=position, fill = basketball$position)) + geom_bar()
 
-#3D plots with plotly
-p <- plot_ly(mpg, x = ~cty, y = ~hwy, z = ~displ, color = ~drv) %>%
-   add_markers() %>%
-   layout(scene = list(xaxis = list(title = 'City MPG'),
-                      yaxis = list(title = 'Displacement'),
-                      zaxis = list(title = 'Highway MPG')))
-p
+#question 2
+
+
+
+```
