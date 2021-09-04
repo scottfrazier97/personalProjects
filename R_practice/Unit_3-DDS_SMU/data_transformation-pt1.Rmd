@@ -1,0 +1,52 @@
+```{r}
+library(ggplot2)
+library(tidyverse)
+
+
+```
+mpg
+
+```{r filter}
+#practice using filter verb
+mpg[mpg$class == "compact",] = mpg %>% filter(class=="compact")
+
+#doing the same above, but with histogram
+mpg %>% filter(class=="compact") %>% ggplot(aes(x=cty)) + geom_histogram() + ggtitle("City MPG")
+
+#filtering for cars with hwy above 26
+mpg %>% filter(hwy >= 26)
+
+#filtering using and, or, not operators
+mpg %>% filter(class=="2seater" &  cty > 15) #using the & operator
+
+mpg %>% filter(class=="midsize" & (cty > 17 | hwy > 20)) #using & and |
+
+mpg %>% filter(class=="minivan" | class=="compact" & (manufacturer != "audi" )) #using | and & and != 
+unique(mpg$class)
+```
+
+```{r missingValues}
+#missing values in R are recorded as NA
+4 + NA
+1 > NA
+
+x = NA
+is.na(x)
+
+age = c(22,21,NA,24,19,20,23)
+yrs_math_ed = c(4,5,NA,2,5,3,5)
+names = c("Mary","Martha","Rosy","Kim","Kristen","Amy","Sam")
+subject = c("English","Math",NA,"Sociology","Math","Music","Dance")
+df = data.frame(Age = age, Years = yrs_math_ed,Name = names, Major = subject)
+df
+
+#checking for null values
+is.na(df$Name)
+is.na(df$Age)
+
+
+#keeping only complete records
+df %>% filter(!is.na(Years))
+
+
+```
