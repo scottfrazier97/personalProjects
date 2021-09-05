@@ -48,5 +48,16 @@ is.na(df$Age)
 #keeping only complete records
 df %>% filter(!is.na(Years))
 
+```
+```{r arranging}
+#arranging is essentially sorting
+mpg %>% arrange(manufacturer) %>% print(n=30) #arrange by manufacturer and print first 30
 
+#arrange by manufacturer, then by cty
+mpg %>% arrange(manufacturer, cty) %>% print(n=30) #arrange by manufacturer and print first 30
+
+#sorting on column with no NAs
+df %>% arrange(df$Name)
+
+df %>% arrange(df$Age)
 ```
