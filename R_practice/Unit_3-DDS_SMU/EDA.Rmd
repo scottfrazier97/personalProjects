@@ -1,0 +1,39 @@
+```{r imports}
+library(GGally)
+library(tidyverse)
+library(ggplot2)
+```
+mpg
+fifa = read.csv(file.choose(), header = T)
+
+``` {r EDA}
+#EDA is about looking for what we believe to be there, as well as what we do not expect to be there
+
+## Plots
+# Histograms
+# Box plots
+# Density plots
+# Pairwise scatter
+# Time series
+
+## Summary Stats
+# Mean
+# Five number summary
+
+## Why do EDA?
+# Gain knowledge about our data
+# Comparisons between dists
+# Sanity check
+# Missing data
+# Outliers
+# Summarize data
+
+## How to EDA?
+# Ask questions about data
+# Questions will lead to newer and more fruitful questions
+# Use plots, graphs, summary stats to answer those questions
+# Two main questions drive EDA:
+# - What type of dist do my vars follow?
+# - What type of covariation occurs between my variables?
+
+```
