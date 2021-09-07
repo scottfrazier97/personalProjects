@@ -19,6 +19,7 @@ mpg %>% filter(hwy >= 26)
 #filtering using and, or, not operators
 mpg %>% filter(class=="2seater" &  cty > 15) #using the & operator
 
+#filter is for rows
 mpg %>% filter(class=="midsize" & (cty > 17 | hwy > 20)) #using & and |
 
 mpg %>% filter(class=="minivan" | class=="compact" & (manufacturer != "audi" )) #using | and & and != 
