@@ -1,0 +1,55 @@
+```{r imports}
+library(GGally)
+library(tidyverse)
+library(ggplot2)
+```
+
+fifa = read.csv(file.choose(), header = T)
+
+head(fifa)
+
+newdf = fifa %>% filter(Position == "LM" | Position == "LF") %>% select(Agility, Position)
+newdf
+head(newdf)
+
+fifa %>% filter(Position=="LM" | Position=="LF") %>% 
+  select(Acceleration, Agility, Position) %>% 
+  ggpairs(aes(color=Position))
+
+
+even_newer_df = newdf[sample(nrow(newdf), 30), ]
+even_newer_df
+
+df2 = fifa %>% group_by(Position) %>% summarize(meanAGL = mean(Agility), count = n())
+print.data.frame(df2)
+
+df[sample(nrow(df), 3), ]
+
+newdf %>%   group_by(Position) %>%   sample_n(10)
+
+qt(.975, 18)
+
+fifa %>% filter(Position=="LM" & Position=="LF") %>% 
+  ggplot(aes(x=Agility),)
+  
+fifa %>% filter(Position=="LF") %>% ggplot(aes(x=Agility)) + geom_histogram() + ggtitle("LF Agility")
+
+fifa %>% filter(Position=="LM") %>% ggplot(aes(x=Agility)) + geom_histogram() + ggtitle("LM Agility")
+
+
+fifa
+
+max(fifa$Overall)
+
+rating_fac = cut(fifa$Overall, breaks = c(1,50,65,80,89, 100), labels = c("Low", "Poor", "Good", "Great", "Amazing"))
+fifa %>% mutate(rating_fac=rating_fac) %>% ggplot(aes(x=Positioning, y=Finishing, color=rating_fac)) + geom_point() + ggtitle("Finishing v. Positioning")
+
+fifa %>% filter(Nationality=="Argentina" | Nationality=="Brazil") %>% 
+  select(Positioning, Finishing, Nationality) %>% 
+  ggpairs(aes(color=Nationality))
+
+fifa %>% filter(Nationality=="Argentina" | Nationality=="Brazil") %>% 
+  select(Finishing, Nationality) %>% 
+  ggplot(aes(x=Finishing, color=Nationality)) + geom_bar()
+
+
