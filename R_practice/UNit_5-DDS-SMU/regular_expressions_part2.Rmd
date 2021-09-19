@@ -1,0 +1,85 @@
+```{r imports}
+library(tidyverse)
+library(stringr)
+```
+
+```{r string manipulation}
+
+MJ = "\"I've missed more than 9000 shots in my career. I've lost almost 300 games. 26 times, I've been trusted to take the game winning shot and missed. I've failed over and over and over again in my life. And that is why I succeed.\" - Michael Jordan"
+
+#find the first specific string values in variable
+str_view(MJ, "shot")
+
+#find all values containing the word shot in them, not just first
+str_view_all(MJ, "shot")
+
+#use two escape backslashes to escape string, and period wildcard
+str_view_all((MJ, "shot\\."))
+
+#find exact cases, just shot
+str_view_all(MJ, "\\bshot\\b")
+
+#find space, I, space
+str_view_all(MJ, " I ")
+
+#I at the beginnign of sentence
+str_view_all(MJ, "\\. I")
+
+#look for I at the beginning of sentence OR next to quotes
+str_view_all(MJ,"(\\. I| \"I)")
+
+#######################################
+
+#Anchors
+
+SJ = " \"Sometimes when you innovate, you make mistakes. It is best to admit them quickly, and get on with improving your other innovations.\" - Steve Jobs"
+
+#The ^ tool checks for matches at the beginning of the string, space after the carrot because the quote began with a space technically
+str_view(SJ, "^ \"Some")
+
+#This returns no matches
+str_view(SJ, "^When")
+
+#Grabs matches at the end of the string
+str_view(SJ, "Jobs$")
+
+#######################################
+
+#Character classes and alternatives
+
+df = data.frame(quotes = c(MJ,SJ))
+df$quotes
+str_view(df$quotes,"(Steve|Jobs)")
+str(df) 
+
+#IF <--- the DF above is brought in as factor and not string, do the below 
+df = data.frame(quotes = c(string2,string4,string5,string6), stringsAsFactors = FALSE)
+df$quotes
+str_view(df$quotes,"(Steve|Jobs)")
+
+#bring back all matches of these letters, regardless of order
+str_view_all(df$quotes,"[abc]")
+
+#when the anchor character, ^, is inside the brackets it means not
+str_view_all(df$quotes,"[^abc]")
+
+########################################
+
+#Repetitions 
+
+# ?: 0 or 1
+# +: 1 or more
+# *: 0 or more
+
+str_view(df$quotes, "0+") #Greedy
+str_view(df$quotes, "[ab]+") #Greedy
+str_view_all(df$quotes, "[ab]+")
+
+# {n}: exactly n
+# {n,} n or more
+# {,m} at most m
+str_view_all(df$quotes, "[sn]{2}") #Greedy
+
+
+
+```
