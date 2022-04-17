@@ -1,4 +1,4 @@
-from random import randrange
+from random import randrange 
 
 #pokemon-types
 pokemon_starter_types = ["Fire", "Water", "Grass"]
@@ -13,7 +13,7 @@ beginning_pokemon = {
 ###### Added function to print cleaner line
 
 def print_line(string):
-    result = '-'*len(string)
+    result = '-' * len(string)
     return result
 
 text1 = "Hello there! Welcome to the amazing world of Pokemon!"

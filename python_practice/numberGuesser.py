@@ -25,12 +25,12 @@ while play:
 
     print("STATS:")
     print(f"You have correctly guessed the number {correctCounter} time(s), with a total guess count of {playCounter}.")
-    print("This brings your win ratio to:", correctCounter / playCounter)
+    print("This brings your win percentage to:", correctCounter / playCounter)
     
     dashes()
     
     again = str(input("Do you want to play again, type yes or no?"))
     dashes()
-    if again == "no":
+    if again not in ('yes', 'YES', 'Yes', 'y', 'Y'):
       play = False
       break

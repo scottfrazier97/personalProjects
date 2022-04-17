@@ -11,9 +11,9 @@ for freedom in freedom:
     print(freedom)
 
 for i in range(4):
-    print('*************---------------')
+    print('*************-----------------')
 for x in range(4):
-    print('----------------------------')
+    print('------------------------------')
 
 yearLiberated = int(1776)
 currentYear = int(input("Enter the current year: "))

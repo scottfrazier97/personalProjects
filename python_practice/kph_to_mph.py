@@ -1,6 +1,6 @@
 import tkinter as tk
 
-print("Welcome to the KPH to MPH converter!")
+print("Welcome to the speed converter!")
 print("- " * 5)
 
 user_speed_prompt = float(input("To begin, enter a speed in MPH: "))
