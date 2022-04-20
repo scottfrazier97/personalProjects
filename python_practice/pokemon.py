@@ -45,7 +45,7 @@ class Character:
         return cls(
             ##### Calling the input_check function. Two arguments are passed. One is the question and one is the user input dtype
             input_check('What is your name? ', str),
-            input_check('What is your age? ***Try entering a Str value to see how input_check function works', int), 
+            input_check('What is your age? ', int), 
             input_check('What is your gender? ', str),
             input_check('How many years of Pokemon experience do you have? ***Try entering a Str value to see how input_check function works', int)
         )
