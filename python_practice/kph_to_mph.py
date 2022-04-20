@@ -1,6 +1,3 @@
-from cgitb import small
-
-
 def speed(user):
     while True:
         print("- " * 5)
