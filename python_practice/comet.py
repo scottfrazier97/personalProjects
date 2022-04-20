@@ -8,7 +8,7 @@ def print_line(string):
     return result
 
 text1 = "Hello there! This is a tool to use in reference to facts about Halley's Comet."
-###### Using f string to print onjects from functions
+
 print(f'{text1}\n{print_line(text1)}')
 print("Let's get some basic information about you.")
 
