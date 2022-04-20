@@ -13,7 +13,7 @@ def nameCharCounter():
     elif lettCount < avgLength:
         print(f"Your name is pretty short. To be specific, it is {shorterName} letter(s) shorter than the average first name length, which is:", avgLength)
     elif lettCount == 6:
-        print(f"Your name is equal to the average first name length, which is:", avgLength)
+        print(f"Your name is equal to the average first name length, which is", avgLength, "letters.")
     else:
         pass
 nameCharCounter()
