@@ -32,7 +32,7 @@ class Character:
         return cls(
             ##### Calling the input_check function. Two arguments are passed. One is the question and one is the user input dtype
             input_check('What is your name? ', str),
-            input_check('What is your age?', int), 
+            input_check('What is your age? ', int), 
         )
 
 #for output
@@ -44,7 +44,5 @@ years_until_next_comet = 2061 - today.year
 #Age when the next comet arrives in 2061
 newAge = user.age + years_until_next_comet
 
-#comet_increments
-
 #final output
-print(f"Hello there, {user.name}! You are {user.age} years old right now.\nYou will be {newAge} years old the next time Halley's Comet is near Earth again in 2061.")
+print(f"Hello there, {user.name}! You are {user.age} years old right now.\nYou will be approximately {newAge} years old the next time Halley's Comet is near Earth again in 2061.")

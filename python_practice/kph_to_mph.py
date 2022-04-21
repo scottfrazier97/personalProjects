@@ -7,15 +7,15 @@ def speed(user):
         difference = mphTOKPHconversion - spacestationspeedKPH
         smalldiff = spacestationspeedKPH - mphTOKPHconversion
 
-        print(f"{mphTOKPHconversion} KPH")
+        print(f"{mphTOKPHconversion:,} KPH")
         print("- " * 5)
 
         if mphTOKPHconversion == spacestationspeedKPH:
-            print(f"In case you were wondering, the resulting speed in KPH you received is equal to the speed of the \nInternational Space Station, which is {spacestationspeedKPH} KPH.")
+            print(f"In case you were wondering, the resulting speed in KPH you received is equal to the speed of the \nInternational Space Station, which is {spacestationspeedKPH:,} KPH.")
         elif mphTOKPHconversion > spacestationspeedKPH: 
-            print(f"In case you were wondering, the resulting speed in KPH you received is {difference} KPH faster than that of the \nInternational Space Station in KPH, which is {spacestationspeedKPH} KPH.")
+            print(f"In case you were wondering, the resulting speed in KPH you received is {difference:,} KPH faster than that of the \nInternational Space Station in KPH, which is {spacestationspeedKPH:,} KPH.")
         elif mphTOKPHconversion < spacestationspeedKPH: 
-            print(f"In case you were wondering, the resulting speed in KPH you received is {smalldiff} KPH slower than that of the \nInternational Space Station in KPH, which is {spacestationspeedKPH} KPH.")
+            print(f"In case you were wondering, the resulting speed in KPH you received is {smalldiff:,} KPH slower than that of the \nInternational Space Station in KPH, which is {spacestationspeedKPH:,} KPH.")
 
         print("- " * 15)
         print("Thanks for using the speed converter", "Be sure to come again.", sep=' - ')
