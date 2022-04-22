@@ -45,7 +45,7 @@ years_until_next_comet = 2061 - today.year
 newAge = user.age + years_until_next_comet
 
 #final output
-print(f"Hello there, {user.name}! You are {user.age} years old right now.You will be approximately {newAge} years old the next time Halley's Comet is near Earth again in 2061.\n{print_line(text1)}")
+print(f"Hello there, {user.name}! You are {user.age} years old right now. You will be approximately {newAge} years old the next time Halley's Comet is near Earth again in 2061.\n{print_line(text1)}")
 
 planets = {
     "Mercury": str("6.5 Years"), 
