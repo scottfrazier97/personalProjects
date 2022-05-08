@@ -3,19 +3,21 @@ import random
 
 from numpy import number
 
-#lists of letters, numbers, and special characters
+# Lists of letters, numbers, and special characters
 letters = string.ascii_letters
 numbers = string.digits
 special_characters = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')']
 
-#randomizing the potential choices for the passwords
+# Randomizing the potential choices for the passwords. 'k = n' is required to tell variables to grab all potential characters in the respective list.
 letter_randomizer = random.choices(letters, k = 52)
 number_randomizer = random.choices(numbers, k = 10)
 special_randomizer = random.choices(special_characters, k = 10)
 
+# Concatenating letter and number lists withOUT special characters, then shuffling.
 mixture_no_special = letter_randomizer + number_randomizer
 random.shuffle(mixture_no_special)
 
+# Concatenating letter and number lists WITH special characters, then shuffling.
 mixture_special = letter_randomizer + number_randomizer + special_randomizer
 random.shuffle(mixture_special)
 
@@ -23,6 +25,7 @@ using = True
 
 while using == True:
 
+    # Function for converting all user inputs to uppercase. Insures that inputs will not be denied for casing.
     def input_uppercase(question):
         while True:
             try:
@@ -36,7 +39,7 @@ while using == True:
                 continue
         return result
 
-    #Asking user questions regarding their password
+    # Asking user questions regarding their password
     char_count_input = int(input("How many characters do you want your password to be? "))
     print(' - ' * char_count_input)
 
@@ -44,10 +47,10 @@ while using == True:
     print(' - ' * char_count_input)
 
     while True:
-        if special_char_input in ('N', 'NO', 'Y', 'YES'):
+        if special_char_input in ('N', 'NO', 'Y', 'YES'): # Checking for proper user input for question above
             break
         else:
-            print('Answer not accepted. Please try again by typing Y or N.')
+            print('Answer not accepted. Please try again by typing Y or N.') # If user input is incorrect, break loop
             break
 
     if special_char_input in ('Y', 'YES'):
@@ -58,21 +61,23 @@ while using == True:
         print('Something is brokey. Try again.')
         break
 
+    # Removes all extra list characters from the returned items.
     if special_char_prompt:
         special_pw = mixture_special[:char_count_input]
-        print(''.join(special_pw))
+        print(f'Here is your password: \n{"".join(special_pw)}')
     else:
         no_special_pw = mixture_no_special[:char_count_input]
-        print(''.join(no_special_pw))
-   
+        print(f'Here is your password: \n{"".join(no_special_pw)}')
+
+   # Asking the user if they are satisfied
     while True:
-        satisfied_prompt = str(input_uppercase("Are you happy with your password? Type Y/N: "))
         print(' - ' * char_count_input)
-        if satisfied_prompt in ('Y', 'YES'):
+        satisfied_prompt = str(input_uppercase("Are you happy with your password? Type Y/N: "))
+        if satisfied_prompt in ('Y', 'YES'):    # If yes, loops will break, ending the program.
             using = False
             print("Thank you! Have a nice day.")
             break
-        elif satisfied_prompt in ('N', 'NO'):
+        elif satisfied_prompt in ('N', 'NO'):   # If no, loops break and restart outer most while loop. Effectively restarting the program.
             break
         else:
             print("Someting must have gone wrong, SORRY! Make sure you read the instructions carefully!")
