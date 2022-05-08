@@ -47,7 +47,7 @@ class Character:
             input_check('What is your name? ', str),
             input_check('What is your age? ', int), 
             input_check('What is your gender? ', str),
-            input_check('How many years of Pokemon experience do you have? ***Try entering a Str value to see how input_check function works', int)
+            input_check('How many years of Pokemon experience do you have? ', int)
         )
 
 user = Character.from_input()
