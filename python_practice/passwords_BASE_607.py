@@ -1,11 +1,9 @@
 import string
 import random
 
-<<<<<<< HEAD
+from numpy import number
+
 # Lists of letters, numbers, and special characters
-=======
-# Variables for letters, numbers, and special characters
->>>>>>> f8cded1ae0b0fe6167ea741c7270377dcf6baff3
 letters = string.ascii_letters
 numbers = string.digits
 special_characters = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')']
