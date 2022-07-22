@@ -1,0 +1,147 @@
+body {
+    background-color: rgb(64,72,91,255);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+#h2welcome {
+   color: white; 
+   display: inline-block;
+}
+
+#h2exp{
+    color:white;
+    margin: auto;
+    width: 75%;
+    padding: 10px;
+}
+
+p{
+    color: white;
+}
+
+#ul-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+#nav-next{
+    display: inline;
+    float: left;
+}
+
+#nav-next:hover {
+    background-color: #111;
+}
+
+#ul-a{
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+#sfpic{
+    float: right;
+    padding-top: 15px;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    padding: 0;
+}
+  
+th, td {
+    text-align: left;
+    padding: 5px;
+}
+  
+tr:nth-child(even){background-color: #f2f2f2}
+tr:nth-child(odd){background-color: #bf7171}
+  
+th {
+    background-color: #333;
+    color: white;
+}
+
+#about-info{
+    padding: 0;
+    margin: auto;
+}
+
+#logos{   
+    /* width: 200px;
+    height: 200px; */
+    margin-top: 60px;
+    margin-left: auto; 
+    margin-right: auto;
+    text-align: justify;
+    -ms-text-justify: distribute-all-lines;
+    text-justify: distribute-all-lines;
+}
+
+#logos a {
+    vertical-align: top;
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+}
+
+.stretch {
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0;
+}
+
+.about-pics{
+    width: 200px;
+    height: 200px;
+}
+
+#hr1{
+    border: 1px solid white;
+}
+
+.schools{
+    color: #f2f2f2;
+    font-size: 17px;
+}
+
+#schools{
+    color: #f2f2f2;
+}
+
+#myCanvas {
+    padding: 70px 0;
+    text-align: center;    
+}
+
+#svgsm{
+    display: block;
+    margin: auto;
+    padding-top: 5%;
+    stroke-width: 5px;
+}
+
+.h2d3{
+    color: #f2f2f2;
+}
+
+#d3-container{
+    outline: 3px solid;
+    border-radius: 1%;
+    color: white;
+}
+
+.line {
+    fill: none;
+    stroke: white;
+    stroke-width: 2px;
+}
+  

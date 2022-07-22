@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Scott Frazier - D3Visuals</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <link rel="icon" type="image/x-icon" href="Resources/favicon.ico">
+    </head>
+    <body>
+        <ul id="ul-nav">
+            <li id="nav-next"><a id = "ul-a" href="index.html">Home</a></li>
+            <li id="nav-next"><a id = "ul-a" href="experience.html">Experience</a></li>
+            <li id="nav-next"><a id = "ul-a" href="P5.html">p5</a></li>
+            <li id="nav-next"><a id = "ul-a" href="JS.html">JavaScript</a></li>
+            <li id="nav-next"><a id = "ul-a" href="D3.html">D3</a></li>
+            <li id="nav-next"><a id = "ul-a" href="D3Vizz.html">D3Visuals</a></li>
+            <li id="nav-next"><a id = "ul-a" href="tableau.html">Tableau</a></li>
+            <li id="nav-next"><a id = "ul-a" href="about.html">About</a></li>
+        </ul>
+        <h2 class="h2d3"></h2>
+        <p style="text-align: right;">Using D3 to create visualizations using movie data.</p>
+        <br>
+        <div id="d3-container">
+            <p style="text-align: center; padding-top: 10px; font-size: 26px;">Financial Gross (SUM) by Year</p>
+            <style>.rectangle:hover{opacity: 0.66}</style>
+            <svg id="svgbar"></svg>
+        </div>
+        <script src="app2.js"></script>
+        <br>
+        <hr id="hr1">
+        <br>
+        <div id="pie">
+            <p style="text-align: center; padding-top: 10px; font-size: 26px;">Financial Gross (SUM) by Genre</p>
+            <svg id="svgpie" width="1000" height="500"></svg>
+        </div>
+        <script src="app3.js"></script>
+
+       
+    </body>
+</html>

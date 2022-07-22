@@ -1,8 +1,6 @@
 import string
 import random
 
-from numpy import number
-
 # Lists of letters, numbers, and special characters
 letters = string.ascii_letters
 numbers = string.digits
