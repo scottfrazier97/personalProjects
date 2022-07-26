@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <title>Scott Frazier - p5</title>
         <script src="p5.js"></script>
-        <script src="sketch.js"></script>
         <link rel="stylesheet" href="style.css">
         <link rel="icon" type="image/x-icon" href="Resources/favicon.ico">
     </head>
@@ -16,9 +15,23 @@
             <li id="nav-next"><a id = "ul-a" href="JS.html">JavaScript</a></li>
             <li id="nav-next"><a id = "ul-a" href="D3.html">D3</a></li>
             <li id="nav-next"><a id = "ul-a" href="D3Vizz.html">D3Visuals</a></li>
-            <li id="nav-next"><a id = "ul-a" href="tableau.html">Tableau</a></li>
+            <div class="dropdown">
+                <button class="dropbtn">Tableau
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                <a href="tableau.html">Global Sales</a>
+                <a href="tabdash.html">Dashboard</a>
+                <a href="#">Link 3</a>
+                </div>
+            </div>
             <li id="nav-next"><a id = "ul-a" href="about.html">About</a></li>
         </ul>
+        <br>
 
+        <div id="myCanvas2">
+        <script src="sketch.js"></script>
+
+        </div>
     </body>
 </html>

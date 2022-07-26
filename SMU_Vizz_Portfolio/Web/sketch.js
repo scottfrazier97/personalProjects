@@ -8,7 +8,12 @@ let hormin;
 let hormax;
 
 function setup() {
-  cnv = createCanvas(1520, 600);
+  var canvasDiv = document.getElementById('myCanvas2');
+
+  var width = canvasDiv.offsetWidth;
+  var height = width/2.5;
+
+  cnv = createCanvas(width, height);
   frameRate(30);
   stroke(255);
   a = height / 2;
@@ -16,9 +21,9 @@ function setup() {
   a2 = width/2;
   inva2 = width/2;
   vermin = 0;
-  vermax = 600;
+  vermax = height;
   hormin = 0;
-  hormax = 1520;
+  hormax = width;
 }
 
 function draw() {
