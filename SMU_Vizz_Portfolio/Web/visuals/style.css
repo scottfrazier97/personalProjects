@@ -108,12 +108,12 @@ p{
     color: white;
     border-radius: 15px;
     transition: all .35s ease-in-out;
-
 }
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
     display: block;
+
 }
 
 #sfpic{
