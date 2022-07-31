@@ -30,6 +30,15 @@ p{
     border-radius: 15px;
 }
 
+#ul-nav a.active {
+    border-bottom: 3px solid red;
+  }
+
+#ul-nav a.active:hover {
+    border-bottom: 3px solid red;
+    border-radius: 15px;
+  }
+
 #nav-next{
     display: inline;
     float: left;
@@ -47,7 +56,6 @@ p{
     padding: 14px 16px;
     text-decoration: none;
 }
-
 
 #ul-a:hover{
     display: block;
@@ -74,6 +82,11 @@ p{
     font-size: inherit;
     font-weight: bold;
     
+}
+
+#tableauactive{
+    border-bottom: 3px solid red;
+
 }
 
 .dropdown .dropbtn:hover {
