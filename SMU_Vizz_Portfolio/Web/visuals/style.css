@@ -159,6 +159,7 @@ th {
 #about-info{
     padding: 0;
     margin: auto;
+    width: 90%;
 }
 
 #logos{   
@@ -192,7 +193,6 @@ th {
     transform: scale(1.2);
     transition: all .35s ease-in-out;
     box-shadow: 3px 3px 5px rgb(0, 0, 0);
-
 }
 
 #hr1{
