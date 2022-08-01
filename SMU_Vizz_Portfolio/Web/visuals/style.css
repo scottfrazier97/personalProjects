@@ -4,9 +4,12 @@ body {
     font-weight: bold;
 }
 
-#h2welcome {
+#h1welcome {
    color: white; 
    display: inline-block;
+   margin-left: 50%;
+   transform: translateX(-50%);
+   text-shadow: 2px 2px #000000;
 }
 
 #h2exp{
@@ -132,9 +135,11 @@ p{
 
 }
 
+
 #sfpic{
     float: right;
-    padding-top: 15px;
+    padding: 15px;
+    
 }
 
 table {
@@ -240,3 +245,18 @@ th {
     stroke-width: 2px;
 }
   
+.pageLinks{
+    color: white;
+    transition: all .35s ease-in-out;
+    text-decoration: none;
+}
+
+.pageLinks:hover{
+    color: white;
+    text-decoration: underline;
+    font-size: x-large;
+    transition: all .35s ease-in-out;
+}
+
+
+
