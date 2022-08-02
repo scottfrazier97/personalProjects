@@ -89,7 +89,6 @@ p{
 
 #tableauactive{
     border-bottom: 3px solid red;
-
 }
 
 .dropdown .dropbtn:hover {
@@ -132,7 +131,6 @@ p{
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
     display: block;
-
 }
 
 
@@ -257,3 +255,4 @@ th {
     font-size: x-large;
     transition: all .35s ease-in-out;
 }
+
