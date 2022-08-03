@@ -12,6 +12,11 @@ body {
    text-shadow: 2px 2px #000000;
 }
 
+#h2toc{
+    color: white; 
+    text-decoration: underline;
+}
+
 #h2exp{
     color:white;
     margin: auto;
@@ -216,6 +221,15 @@ th {
     margin: auto;
     padding-top: 5%;
     stroke-width: 5px;
+}
+
+#myCanvas {
+    position: absolute;
+    top: 30px;;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;    
 }
 
 .h2d3{
