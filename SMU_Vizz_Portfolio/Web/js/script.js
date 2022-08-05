@@ -7,9 +7,9 @@ function mouseEvents(e) {
   const bounds = canvas.getBoundingClientRect();
   mouse.x = e.pageX - bounds.left - scrollX;
   mouse.y = e.pageY - bounds.top - scrollY;
-}
+};
 
-document.addEventListener("mousemove", mouseEvents);
+window.addEventListener("mousemove", mouseEvents);
 
 xcenter = canvas.width/2;
 ycenter = canvas.height/2;
@@ -62,21 +62,21 @@ function drawRotated(x, y, angle) {
   context.stroke();
 
   
-}
+};
 
 // render loop called 60 times a second
 function update(timer) {
   context.setTransform(1, 0, 0, 1, 0, 0); // reset transform
-  //context.clearRect(0, 0, 300, 300);
+  context.clearRect(0, 0, 1220, 1220);
 
   // get angle from center to mouse
-  var angle = Math.atan2(mouse.y - 375, mouse.x - 375);
+  var angle = Math.atan2(mouse.y - 610, mouse.x - 610);
 
   // draw rotated design
   
   drawRotated(xcenter, ycenter, angle);
   requestAnimationFrame(update);
-}
+};
 requestAnimationFrame(update);
 
 

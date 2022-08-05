@@ -251,13 +251,17 @@ th {
 .pageLinks{
     color: white;
     transition: all .35s ease-in-out;
-    text-decoration: none;
+    text-decoration: underline rgba(255, 0, 0, 0);
+    padding: 1px;
+    border: 2px solid rgba(255, 255, 255, 0);
 }
 
 .pageLinks:hover{
     color: white;
-    text-decoration: underline;
+    text-decoration: underline rgba(255, 0, 0);
     font-size: x-large;
     transition: all .35s ease-in-out;
+    border: 2px solid white;
+    border-radius: 5px;
 }
 
