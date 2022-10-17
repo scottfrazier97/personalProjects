@@ -61,3 +61,7 @@ aic5.wge(diffx7)
 AAL = read.csv(file.choose(), header = T)
 diffAAL = artrans.wge(AAL$close, 1)
 aic5.wge(diffAAL)
+
+
+x8 = gen.aruma.wge(n=200, phi=c(.6, -.8),s=4, theta=-.3)
+plotts.sample.wge(x8)
