@@ -9,4 +9,3 @@ for n in range(100):
         print(n, "Buzz", sep="-")   #If value is divisible by just 3, print Buzz
         continue
     print(n)
-
