@@ -5,22 +5,21 @@ letters = string.ascii_letters
 numbers = string.digits
 special_characters = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')']
 
-# Randomizing the potential choices for the passwords. 'k = n' is required to tell variables to grab all potential characters in the respective list.
-letter_randomizer = random.choices(letters, k = 52)
-number_randomizer = random.choices(numbers, k = 10)
-special_randomizer = random.choices(special_characters, k = 10)
-
-# Concatenating letter and number lists withOUT special characters, then shuffling.
-mixture_no_special = letter_randomizer + number_randomizer
-random.shuffle(mixture_no_special)
-
-# Concatenating letter and number lists WITH special characters, then shuffling.
-mixture_special = letter_randomizer + number_randomizer + special_randomizer
-random.shuffle(mixture_special)
-
 using = True
-
 while using == True:
+    
+    # Randomizing the potential choices for the passwords. 'k = n' is required to tell variables to grab all potential characters in the respective list.
+    letter_randomizer = random.choices(letters, k = 52)
+    number_randomizer = random.choices(numbers, k = 10)
+    special_randomizer = random.choices(special_characters, k = 10)
+
+    # Concatenating letter and number lists withOUT special characters, then shuffling.
+    mixture_no_special = letter_randomizer + number_randomizer
+    random.shuffle(mixture_no_special)
+
+    # Concatenating letter and number lists WITH special characters, then shuffling.
+    mixture_special = letter_randomizer + number_randomizer + special_randomizer
+    random.shuffle(mixture_special)
 
     # Function for converting all user inputs to uppercase. Insures that inputs will not be denied for casing.
     def input_uppercase(question):
