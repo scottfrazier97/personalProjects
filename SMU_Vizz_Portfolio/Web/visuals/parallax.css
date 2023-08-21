@@ -146,7 +146,7 @@ p{
     font-family: sans-serif;
   } */
 body {
-    background-image: url(/Resources/moon.jpg);
+    background-image: url(/Web/Resources/moon.jpg);
 }
 
 .mouse_move {
