@@ -6,7 +6,7 @@ def nameCharCounter():
     shorterName = avgLength - lettCount
     longerName = lettCount - avgLength
     print("-" * len(name))
-    print(f"Your name is {name}, and it is {lettCount} letters long...Don't believe me?! Go ahead and count 'em!")
+    print(f"Your name is {name}, and it is {lettCount} letters long.")
 
     if lettCount > avgLength:
         print(f"Your name is pretty long. To be specific, it is {longerName} letter(s) longer than the average first name length, which is:", avgLength)

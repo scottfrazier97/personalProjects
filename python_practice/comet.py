@@ -62,7 +62,7 @@ planets = {
 #Additional fun facts about your age and space
 print(f"Here are some additional fun facts! Below we have times listed for how long it would take to travel to each planet in the Solar System! ")
 print(print_line(text1))
-print(" PLANET ", " TRAVEL TIME ", sep=" - ")
+print("|PLANET|", " TRAVEL TIME ", sep=" - ")
 
 for x, y in planets.items():
   print(f"|{x}| - {y}")
