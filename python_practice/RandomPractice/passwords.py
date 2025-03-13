@@ -26,8 +26,7 @@ while using == True:
         while True:
             try:
                 result = input(question)
-                result = result.lstrip()
-                result = result.rstrip()
+                result = result.strip()
                 result = result.upper()
                 break
             except:
@@ -37,24 +36,19 @@ while using == True:
 
     # Asking user questions regarding their password
     char_count_input = int(input("How many characters do you want your password to be? "))
-    print(' - ' * char_count_input)
+    
+    def dashed_lines():
+        print(' - ' * char_count_input)
 
     special_char_input = str(input_uppercase("Would you like to include special characters (!, @, #, etc.) in your password? Type Y/N: "))
-    print(' - ' * char_count_input)
-
-    while True:
-        if special_char_input in ('N', 'NO', 'Y', 'YES'): # Checking for proper user input for question above
-            break
-        else:
-            print('Answer not accepted. Please try again by typing Y or N.') # If user input is incorrect, break loop
-            break
+    dashed_lines()
 
     if special_char_input in ('Y', 'YES'):
         special_char_prompt = True
     elif special_char_input in ('N', 'NO'):
         special_char_prompt = False
     else:
-        print('Something is brokey. Try again.')
+        print('Something is broken. Try again.')
         break
 
     # Removes all extra list characters from the returned items.
@@ -67,7 +61,8 @@ while using == True:
 
    # Asking the user if they are satisfied
     while True:
-        print(' - ' * char_count_input)
+        dashed_lines()
+        
         satisfied_prompt = str(input_uppercase("Are you happy with your password? Type Y/N: "))
         if satisfied_prompt in ('Y', 'YES'):    # If yes, loops will break, ending the program.
             using = False
