@@ -10,6 +10,7 @@
 
 total_blocks = 900
 
+#The underscore is a common placeholder convention here. It is still being assigned to the value of the enumerate function, but not actually being utilized in our code. Therefore, the "_" is just for the reader to see it and recognize as a placeholder
 for index, _ in enumerate(range(total_blocks)):
     if index % 7 == 0:
         print(f"{index}: Powered Rail")
