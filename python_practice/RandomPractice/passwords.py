@@ -5,8 +5,7 @@ letters = string.ascii_letters
 numbers = string.digits
 special_characters = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')']
 
-using = True
-while using == True:
+while True:
     
     # Randomizing the potential choices for the passwords. 'k = n' is required to tell variables to grab all potential characters in the respective list.
     letter_randomizer = random.choices(letters, k = 52)
@@ -60,16 +59,14 @@ while using == True:
         print(f'Here is your password: \n{"".join(no_special_pw)}')
 
    # Asking the user if they are satisfied
-    while True:
-        dashed_lines()
+    dashed_lines()
         
-        satisfied_prompt = str(input_uppercase("Are you happy with your password? Type Y/N: "))
-        if satisfied_prompt in ('Y', 'YES'):    # If yes, loops will break, ending the program.
-            using = False
-            print("Thank you! Have a nice day.")
-            break
-        elif satisfied_prompt in ('N', 'NO'):   # If no, loops break and restart outer most while loop. Effectively restarting the program.
-            break
-        else:
-            print("Someting must have gone wrong, SORRY! Make sure you read the instructions carefully!")
-            continue
+    satisfied_prompt = str(input_uppercase("Are you happy with your password? Type Y/N: "))
+    if satisfied_prompt in ('Y', 'YES'):    # If yes, loops will break, ending the program.
+        print("Thank you! Have a nice day.")
+        break
+    elif satisfied_prompt in ('N', 'NO'):   # If no, loops break and restart outer most while loop. Effectively restarting the program.
+        continue
+    else:
+        print("Someting must have gone wrong, SORRY! Make sure you read the instructions carefully!")
+        continue

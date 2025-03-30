@@ -5,9 +5,7 @@
 import random
 
 count = 0
-
-running = True
-while running == True:
+while True:
     random_num = random.choice(range(0,10))
     user_guess = input("Guess a number, or type exit: ")
     count += 1
@@ -19,7 +17,7 @@ while running == True:
         print("Correct guess!")
         continue
     elif int(user_guess) > random_num:
-        print("User number too high!")
+        print("User guess too high!")
         continue
     elif int(user_guess) < random_num:
         print("User guess too low!")
