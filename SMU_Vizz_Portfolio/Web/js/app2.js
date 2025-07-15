@@ -1,3 +1,5 @@
+function drawChart() {
+
 const data = [
     {"year2":1980,"gross2":2483666964},
     {"year2":1981,"gross2":2520064889},
@@ -42,15 +44,15 @@ const data = [
     {"year2":2020,"gross2":2848298792}
   ]
 
-const width = 1500;
+const container = document.getElementById('d3-container');
+const width = container.clientWidth;
 const height = 500;
 const margin = { top: 25, bottom: 25, left: 85, right: 0};
 
 const svg = d3.select('#d3-container')
     .append('svg')
-    .attr('height', height)
-    .attr('width', width - margin.left)
-    .attr('viewBox', [0,0,width,height])
+    .attr('viewBox', [0, 0, width, height])
+    .attr('preserveAspectRatio', 'xMidYMid meet')
     .style('background', 'rgb(64,72,91,255)');
 
 const x = d3.scaleBand()
@@ -89,4 +91,10 @@ svg.append('g').call(xAxis)
 svg.append('g').call(yAxis)
 svg.node();
 
+}
 
+drawChart();
+window.addEventListener("resize", () => {
+  d3.select("#d3-container").selectAll("svg").remove(); // clear old chart
+  drawChart(); // redraw with new width
+});
