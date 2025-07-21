@@ -11,7 +11,7 @@ ORDER BY grade_level;		--Columns to sort values by
 --The Big 6 must always be written in this order
 -- The only required clause within a SQL query is a SELECT
 
---=== Common SQL Keywords===--
+--=== Common SQL Keywords ===--
 --AND is being used to filter/combine an output where grade level is less than 12 AND they receive a school lunch
 SELECT *
 FROM students
