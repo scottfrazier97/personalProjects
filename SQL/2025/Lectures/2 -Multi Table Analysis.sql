@@ -113,3 +113,95 @@ FROM products p
 	ON p.product_id = o.product_id
 
 WHERE o.product_id IS NULL;
+
+
+--=== Joining on Multiple Columns ===--
+--You can join on multiple columns using "AND" in the join condition
+--If we have a case such as year and country, we can't join on just country. 
+--Need another identifier to join the data properly (combination of year and country MAKES it a unique identifier)
+
+SELECT
+
+	hs.year
+	,hs.country
+	,hs.happiness_score
+	,ir.inflation_rate
+
+FROM happiness_scores hs
+
+	INNER JOIN inflation_rates ir
+		ON hs.year = ir.year
+		AND hs.country = ir.country_name;
+
+
+--=== Joining Multiple Tables ===--
+--You can join more than two tables as long as you specify the columns that link the tables together
+
+SELECT
+
+	hs.year
+	,hs.country
+	,hs.happiness_score
+	,cs.continent
+	,ir.inflation_rate
+
+FROM happiness_scores hs
+
+	LEFT JOIN country_stats cs
+		ON hs.country = cs.country
+
+	LEFT JOIN inflation_rates ir
+		ON hs.year = ir.year 
+		AND hs.country = ir.country_name
+
+
+--=== SELF JOIN ===--
+--Joining a table with itself, and involves two steps:
+--1) Combine a table with itself based on a matching column
+--2) Filter on the resulting rows based on some criteria
+--Ex 1: Identifying matching salary rows within a table (comparing rows side by side):
+----If two people from the employees table had the same salary but different names, 
+----then it would return those records
+
+SELECT 
+	e1.employee_name
+	,e1.salary
+	,e2.employee_name
+	,e2.salary
+
+FROM employees e1 
+	
+	INNER JOIN employees e2
+		ON e1.salary = e2.salary
+
+WHERE e1.employee_name <> e2.employee_name
+
+ORDER BY e1.employee_name
+
+--Ex 2: Comparing values within rows in a table
+--Finding employees that have higher salaries than other employees
+
+SELECT 
+	e1.employee_name
+	,e1.salary
+	,e2.employee_name
+	,e2.salary
+
+FROM employees e1 
+	
+	INNER JOIN employees e2
+		ON e1.salary > e2.salary
+
+ORDER BY e1.employee_name
+
+--Ex 3: Display relationships within a table
+SELECT
+	m1.employee_id
+	,m1.employee_name
+	,m1.manager_id
+	,m2.employee_name AS ManagerName
+
+FROM employees m1
+
+	LEFT JOIN employees m2
+		ON m1.manager_id = m2.employee_id
