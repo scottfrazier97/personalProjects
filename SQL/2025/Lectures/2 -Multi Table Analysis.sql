@@ -205,3 +205,102 @@ FROM employees m1
 
 	LEFT JOIN employees m2
 		ON m1.manager_id = m2.employee_id
+
+--=== ASSIGNMENT: SELF JOINs ===--
+-- Join the products table with itself so each candy is paired with a different candy
+-- Calculate the price difference, do a self join, and then return only price differences under 25 cents
+
+SELECT 
+	p1.product_name
+	,p1.unit_price
+	,p2.product_name
+	,p2.unit_price
+	,ABS((p1.unit_price - p2.unit_price)) AS price_diff
+
+FROM products p1 
+	
+	INNER JOIN products p2
+		ON p1.product_id <> p2.product_id
+
+WHERE 
+	p1.unit_price IS NOT NULL
+	AND ABS((p1.unit_price - p2.unit_price)) < 0.25
+	AND p1.product_name < p2.product_name
+
+ORDER BY price_diff DESC
+
+--===CROSS JOINs ===--
+--Returns all combinations of rows within two or more tables
+--Can produce VERY LARGE outputs if too many categories are present
+
+SELECT *			--id	item
+FROM tops;			--1	    T-Shirt
+					--2	    Hoodie	
+
+SELECT *			--id	size
+FROM sizes;			--101	Small
+					--102	Medium
+					--103	Large
+
+SELECT
+	t.item
+	,s.size
+
+FROM tops t	CROSS JOIN sizes s
+
+--Ex: Accomplishing same result as our previous assignment, but with a CROSS JOIN instead of SELF JOIN
+SELECT 
+	p1.product_name
+	,p1.unit_price
+	,p2.product_name
+	,p2.unit_price
+	,ABS((p1.unit_price - p2.unit_price)) AS price_diff
+
+FROM products p1 
+	
+	--CROSS JOIN in this case is better since it states our intentions more clearly than using a SELF JOIN
+	CROSS JOIN products p2
+
+WHERE 
+	ABS((p1.unit_price - p2.unit_price)) < 0.25
+	AND p1.product_name < p2.product_name
+
+ORDER BY price_diff DESC
+
+--=== UNIONs & UNION ALL ===--
+--Stack multiple tables or query outputs on top of one another
+--UNION: Removes duplicate values
+--UNION ALL: Retains all values
+
+--Every SELECT statement within UNION must have the same number of columns
+--The columns must also have similar data types
+--The columns in every SELECT statement must also be in the same order
+----It is OK if column names do not match
+
+--!TIP!: If absolutely sure there are no duplicate values in the two tables being combined, a UNION ALL
+--will run much faster than a UNION
+
+SELECT *
+FROM tops;
+
+SELECT *
+FROM outerwear;
+
+--UNION (removes duplicates of hoodie, returning 4 rows instead of 5)
+SELECT *
+FROM tops
+
+UNION
+
+SELECT *
+FROM outerwear;
+
+--UNION ALL (retains all rows from both tables, including duplicates. Total of 5 rows)
+SELECT *
+FROM tops
+
+UNION ALL
+
+SELECT *
+FROM outerwear;
+
