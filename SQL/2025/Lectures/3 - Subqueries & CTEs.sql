@@ -146,3 +146,22 @@ ORDER BY
 	,sq1.product_name;
 
 --7) Subqueries in the WHERE & HAVING clauses
+--Ex: Return regions with above average happiness score
+
+--Using subquery in WHERE
+SELECT *
+FROM happiness_scores
+WHERE happiness_score > (SELECT AVG(happiness_score) FROM happiness_scores)
+
+--Using subquery in HAVING
+SELECT 
+	region
+	,AVG(happiness_score) AS AVG_HAPPY
+FROM happiness_scores
+GROUP BY 
+	region
+							  --Subequery below filters the grouped regional data
+HAVING AVG(happiness_score) > (SELECT AVG(happiness_score) FROM happiness_scores)
+ORDER BY AVG_HAPPY DESC
+
+--8) ANY vs ALL
