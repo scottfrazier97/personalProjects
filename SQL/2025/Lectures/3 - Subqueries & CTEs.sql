@@ -41,3 +41,108 @@ FROM Products
 ORDER BY [unit_price] DESC
 
 --5) Subqueries in the FROM clause
+----Ex: Return each country's happiness score for the year alongside the country's average happiness score
+
+SELECT
+	hs.year
+	,hs.country
+	,hs.happiness_score
+	,sq.AVGHAPPY
+
+FROM happiness_scores hs
+	
+	LEFT JOIN 
+
+		(SELECT 
+			country
+			,AVG(happiness_score) AS AVGHAPPY
+
+		FROM happiness_scores
+		GROUP BY 
+			country) sq
+
+		ON hs.country = sq.country;
+
+--6) Multiple Subqueries
+--Queries can contain multiple subqueries as long as each one has a different alias
+--Ex: Return years where happiness score is a whole point greater than the country's avg happiness score
+
+--Actual solution
+SELECT mq.* FROM
+
+	(SELECT
+		hs.year
+		,hs.country
+		,hs.happiness_score
+		,sq.AVGHAPPY
+		,(hs.happiness_score - sq.AVGHAPPY) AS HappyDiff
+
+		FROM   (SELECT year, country, happiness_score FROM happiness_scores
+				UNION ALL
+				SELECT 2024, country, ladder_score FROM happiness_scores_current) AS hs
+
+				LEFT JOIN 
+
+				(SELECT country, AVG(happiness_score) AS AVGHAPPY
+				FROM happiness_scores
+				GROUP BY country) AS sq
+
+					ON hs.country = sq.country) mq
+
+WHERE HappyDiff > 1
+ORDER BY HappyDiff DESC
+
+--My (simpler) solution
+SELECT
+	hs.year
+	,hs.country
+	,hs.happiness_score
+	,sq.AVGHAPPY
+	,(hs.happiness_score - AVGHAPPY) AS Diff
+
+FROM happiness_scores hs
+	
+	LEFT JOIN 
+
+		(SELECT country, AVG(happiness_score) AS AVGHAPPY
+		 FROM happiness_scores
+		 GROUP BY country) sq
+
+		ON hs.country = sq.country
+
+WHERE (hs.happiness_score - AVGHAPPY) > 1
+ORDER BY Diff DESC
+
+----ASSIGNMENT (Subquery in FROM)
+----Review products produced by each factory. Give a list of factories along with the names of the products
+----they produce and the number of products they produce
+
+SELECT 
+	sq1.factory
+	,sq1.product_name
+	,sq2.product_count
+
+FROM
+
+	(SELECT factory, product_name
+		FROM products
+		GROUP BY factory, product_name) sq1
+
+	LEFT JOIN 
+
+	(SELECT factory, COUNT(product_name) AS product_count
+		FROM products
+		GROUP BY factory) sq2
+
+		ON sq1.factory = sq2.factory
+
+GROUP BY
+	sq1.factory
+	,sq1.product_name
+	,sq2.product_count
+
+ORDER BY 
+	sq1.factory
+	,sq1.product_name;
+
+--7) Subqueries in the WHERE & HAVING clauses
