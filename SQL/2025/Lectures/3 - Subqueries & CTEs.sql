@@ -165,3 +165,27 @@ HAVING AVG(happiness_score) > (SELECT AVG(happiness_score) FROM happiness_scores
 ORDER BY AVG_HAPPY DESC
 
 --8) ANY vs ALL
+----These provide more specific filtering logic
+----Ex: Return happiness scores that are greater than ANY / ALL of the current happiness scores
+----ANY is short form for using the OR condition a bunch of times: (Also essentially the same as MIN)
+----a) price > value 1 
+----b) OR price > value 2 
+----c) OR price> value 3, etc. 
+SELECT * 
+FROM happiness_scores
+WHERE happiness_score > 
+	
+	ANY(SELECT ladder_score
+		FROM happiness_scores_current)
+
+----ALL is short form for using the AND condition a bunch of times: (Also essentially the same as MAX)
+----a) price > value 1 
+----b) AND price > value 2 
+----c) AND price> value 3, etc. 
+SELECT * 
+FROM happiness_scores
+WHERE happiness_score > 
+	
+	ALL(SELECT ladder_score
+		FROM happiness_scores_current)
+
