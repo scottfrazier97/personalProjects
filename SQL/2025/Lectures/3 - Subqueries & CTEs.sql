@@ -189,3 +189,25 @@ WHERE happiness_score >
 	ALL(SELECT ladder_score
 		FROM happiness_scores_current)
 
+--9) EXISTS
+----Can use EXISTS to accomplish a similar result to ANY and ALL
+--Ex: Only return happiness scores for countries that EXIST in the inflation rates table
+--Correlated subquery: A subquery that references tables outside of the subquery.
+----As a result, can't stand alone and run on it's own. This type of subquery is known to be slow usually.
+----If it is slow, we can rewrite our correlated subquery as an INNER JOIN to run faster
+
+--Correlated Subquery
+SELECT * 
+FROM happiness_scores h
+WHERE EXISTS 
+		(SELECT i.country_name
+		 FROM inflation_rates i
+		 WHERE i.country_name = h.country);
+			
+--INNER JOIN (Faster, but less readable for some people)			
+SELECT * 
+FROM happiness_scores h
+
+	INNER JOIN inflation_rates i
+		ON h.country = i.country_name
+		AND h.year = i.year;
