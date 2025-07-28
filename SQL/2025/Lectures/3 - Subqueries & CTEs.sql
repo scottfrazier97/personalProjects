@@ -211,3 +211,50 @@ FROM happiness_scores h
 	INNER JOIN inflation_rates i
 		ON h.country = i.country_name
 		AND h.year = i.year;
+
+--ASSIGNMENT (Subquery in the WHERE clause)
+--Identify products with a unit price less than the unit price of all products
+
+SELECT * 
+FROM products;
+
+SELECT * 
+FROM products
+WHERE unit_price < 
+	
+	ALL(SELECT unit_price
+		FROM products
+		WHERE factory = 'Wicked Choccy''s')
+
+--10) Common Table Expressions (CTEs)
+--A temporary output that can be referenced within another query
+--a) Ex (Same as section 7): Return each country's happiness score for the year alongside the country's avg
+----happiness score
+--b) CTEs are a bit more readable and user friendly than subqueries.
+----Can be referenced anywhere in query as if it is a normal table, see JOIN below
+----CTEs start with "WITH" keyword, followed by alias, and query wrapped in parenthesis
+----CTEs can handle recursiveness which can call itself again and again
+
+SELECT * FROM happiness_scores; 
+
+WITH AVG_HAPPY_CTE AS (
+
+	SELECT 
+		country
+		,AVG(happiness_score) AS avg_happy --Aliasing aggregation seemed to remove error
+	FROM happiness_scores
+	GROUP BY country
+
+)
+
+SELECT 
+	
+	h.year
+	,h.country
+	,h.happiness_score
+	,a.avg_happy
+
+FROM happiness_scores h
+
+	LEFT JOIN AVG_HAPPY_CTE a
+		ON h.country = a.country; --Entire section is one code block, CTE and final query.
