@@ -350,4 +350,10 @@ FROM CTE2023 hs23
 	
 	INNER JOIN CTE2024 hs24
 		ON hs23.country = hs24.country
+		
+--Lecture uses a subquery here, but WHERE is easier to accomplish same result
+WHERE hs23.happiness_score > hs24.ladder_score
+;
+
+
 
