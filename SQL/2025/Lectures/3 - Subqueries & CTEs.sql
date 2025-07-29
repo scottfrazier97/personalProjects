@@ -258,3 +258,59 @@ FROM happiness_scores h
 
 	LEFT JOIN AVG_HAPPY_CTE a
 		ON h.country = a.country; --Entire section is one code block, CTE and final query.
+
+--11) Referencing a CTE multiple times
+----Can be done with CTEs and not subqueries
+----Ex: For each country return countries from the same region with a lower happiness score in 2023
+
+WITH hs AS (
+
+	SELECT
+		year
+		,region
+		,country
+		,happiness_score
+
+	FROM happiness_scores
+	WHERE year = 2023
+
+)
+
+SELECT 
+	hs1.year
+	,hs1.country
+	,hs1.region
+	,hs1.happiness_score
+	,hs2.country
+	,hs2.happiness_score
+
+
+FROM hs hs1
+
+	INNER JOIN hs hs2
+		ON hs1.region = hs2.region
+
+WHERE hs1.happiness_score > hs2.happiness_score
+
+--ASSIGNMENT: CTEs
+----Send a list of all orders over $200, and the number of orders over $200
+--Can't use ORDER BY within CTE since ordering comes from main query after CTE
+
+WITH summary AS (
+	SELECT 
+		o.order_id
+		,SUM(o.units * p.unit_price) AS total_amount_spent
+
+	FROM orders o
+
+		LEFT JOIN products p
+			ON o.product_id = p.product_id
+
+	GROUP BY 
+		o.order_id
+
+	HAVING SUM(o.units * p.unit_price) > 200
+)
+
+--Count of records with total amount spent > 200, answer: 7
+SELECT COUNT(*) FROM summary;
