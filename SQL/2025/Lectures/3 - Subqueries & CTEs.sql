@@ -335,7 +335,7 @@ WITH CTE2023 AS (
 		,country
 		,ladder_score
 
-	FROM happiness_scores_current)
+	FROM happiness_scores_current) --Limited to just 2024 already
 
 SELECT 
 
@@ -352,8 +352,7 @@ FROM CTE2023 hs23
 		ON hs23.country = hs24.country
 		
 --Lecture uses a subquery here, but WHERE is easier to accomplish same result
-WHERE hs23.happiness_score > hs24.ladder_score
-;
+WHERE hs23.happiness_score < hs24.ladder_score;
 
 
 
