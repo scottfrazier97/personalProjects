@@ -314,3 +314,40 @@ WITH summary AS (
 
 --Count of records with total amount spent > 200, answer: 7
 SELECT COUNT(*) FROM summary;
+
+--12) Multiple CTEs
+--Can use multiple CTEs in a query, even combine them with subqueries
+--Only need a single WITH keyword, separate CTEs with a comma
+--Ex: Compare 2023 vs 2024 happiness scores side by side
+
+WITH CTE2023 AS (
+	SELECT 
+		year
+		,country
+		,happiness_score
+
+	FROM happiness_scores
+	WHERE year = 2023),
+
+	CTE2024 AS (
+		SELECT 
+		2024 AS "year"
+		,country
+		,ladder_score
+
+	FROM happiness_scores_current)
+
+SELECT 
+
+	 hs23.year
+	,hs23.country
+	,hs23.happiness_score
+	,hs24.year
+	,hs24.country
+	,hs24.ladder_score
+
+FROM CTE2023 hs23
+	
+	INNER JOIN CTE2024 hs24
+		ON hs23.country = hs24.country
+
