@@ -1,4 +1,20 @@
 --=== Subqueries & CTEs ===--
+--KEY TAKEAWAYS--
+--1) A subquery is a query nested within a main query
+----In the SELECT clause, they can be used to make calculations
+----In the FROM clause, they can be used to join query results and require an alias using AS
+----In the WHERE or HAVING clause, they can be used to filter results (can use keywords like ANY, ALL, EXISTS)
+----Avoid correlated subqueries by using INNER JOINs if possible
+
+--2) A common table expression (CTE) creates a named temporary output
+----CTEs are more readable, can be referenced multiple times, and you can create multiple CTEs within a query
+----Recursive CTEs are useful for generating values and working with hierarchical data, but are less common
+
+--3) Temp table and Views are other options for using the results of a query
+----Subqueries and CTEs exists only for the duration of a query, and require minimal permissions to create
+----Temp tables exist for the duration of a session, and views exist indefinitely but they often require 
+--additional permissions to create and maintain
+
 
 --Subquery Basics
 --1) A subquery is a query nested within a main query and is typically used for solving a problem in
@@ -385,3 +401,73 @@ GROUP BY
 ORDER BY 
 	f.factory
 	,f.product_name;
+
+--13) Recursive CTEs
+----A query that references itself which is useful for generating sequences and working with hierarchical data
+--a) First SELECT statement is known as the anchor member, no recursion just yet
+--b) UNION or UNION ALL is known as the connectors. These connect our anchor values with all other values
+--that are going to be generated using recursion
+--c) Second SELECT statement is known as the recursive member that references the CTE.
+
+--Ex: Returning daily stock prices including dates with missing prices
+SELECT * FROM stock_prices;
+
+----We can generate the missing dates with a recursive CTE
+--Step 1: Generate a column of dates
+WITH my_dates AS (
+	
+	--Anchor, saying "Start at the date below"
+    SELECT CAST('2024-11-01' AS DATE) AS dt
+
+	--UNION ALL for connector
+    UNION ALL
+
+	--Recursive member, adds 1 day after the initial anchor date. Keeps doing this until it meets our 
+	--final WHERE criteria (maximum date limitation)
+    SELECT DATEADD(DAY, 1, dt)
+    FROM my_dates
+    WHERE dt < '2024-11-06'
+)
+
+--STEP 2: Join with the stock prices table
+SELECT 
+	md.dt
+	,sp.price
+
+FROM my_dates md
+	LEFT JOIN stock_prices sp
+		ON md.dt = sp.date
+
+OPTION (MAXRECURSION 0);  -- Allows unlimited recursion (or up to 32,767 if needed)
+
+--14) Temp tables & Views
+--Both are options for querying the results of a query
+--Both subqueries and CTEs only exist for the duration of the query
+--Temp tables exist for a session and views continue to exist until modified or dropped
+
+--Temp Tables
+IF OBJECT_ID('tempdb..#wickedchoc') IS NOT NULL
+DROP TABLE #wickedchoc;
+
+SELECT * 
+INTO #wickedchoc --Auto creates/populates the temp table if it doesn't already exist
+FROM products
+WHERE unit_price < 
+	
+	ALL(SELECT unit_price
+		FROM products
+		WHERE factory = 'Wicked Choccy''s')
+		
+SELECT * FROM #wickedchoc;
+
+---VIEW
+-- Create a view
+CREATE VIEW Master.dbo.MyView AS
+SELECT 
+    ID,
+    Name,
+    CreatedDate
+FROM SomeOtherTable
+WHERE IsActive = 1;
+
+
