@@ -354,5 +354,34 @@ FROM CTE2023 hs23
 --Lecture uses a subquery here, but WHERE is easier to accomplish same result
 WHERE hs23.happiness_score < hs24.ladder_score;
 
+--ASSIGNMENT: Rewrite subquery using multiple CTEs
+SELECT * FROM products;
 
+WITH facs AS (
+	SELECT factory, product_name
+	FROM products
+	GROUP BY factory, product_name),
 
+	COUNTS AS (
+	SELECT factory, COUNT(product_name) AS product_count
+	FROM products
+	GROUP BY factory)
+
+SELECT 
+	f.factory
+	,f.product_name
+	,c.product_count
+
+FROM facs f
+
+		INNER JOIN COUNTS c
+		ON f.factory = c.factory
+
+GROUP BY
+	f.factory
+	,f.product_name
+	,c.product_count
+
+ORDER BY 
+	f.factory
+	,f.product_name;
