@@ -90,3 +90,76 @@ FROM orders o
 	ON o.product_id = p.product_id;
 
 --5) Value within a window (First, Last, NTH Value)
+SELECT * FROM baby_girl_names;
+
+--FIRST_VALUE
+--Ex: Below example creates a window on gender, and then sorts on num of baby names, and grabs first value
+	--in that window (name with the highest count value in babies)
+SELECT 
+	gender
+	,name
+	,babies
+
+	--Extracts first value within a window, in sequential row order
+	,FIRST_VALUE(name) OVER (PARTITION BY gender ORDER BY babies DESC) AS top_name
+
+FROM baby_names;
+
+--LAST_VALUE (actually FIRST_VALUE but reversing window sort)
+--Below example is grabbing last value, but LAST_VALUE does not work as expected so we use FIRST_VALUE along with
+--ASC order to sort from least to greatest, and grab the first value of that instead (bottom value essentially)
+SELECT 
+	gender
+	,name
+	,babies
+
+	--Extracts last value within a window
+	,FIRST_VALUE(name) OVER (PARTITION BY gender ORDER BY babies ASC) AS bottom_name
+
+FROM baby_names;
+	
+--NTH_VALUE (Not available in SQL Server, use a form of ROW_NUMBER(), RANK(), or DENSE_RANK())
+----SELECT 
+----	gender
+----	,name
+----	,babies
+
+----	--Extracts first value within a window, in sequential row order
+----	,NTH_VALUE(name, 2) OVER (PARTITION BY gender ORDER BY babies ASC) AS bottom_name
+
+----FROM baby_names;
+
+WITH MAIN AS ( 
+	SELECT 
+		gender
+		,name
+		,babies
+		,ROW_NUMBER() OVER (PARTITION BY gender ORDER BY babies) AS row_num
+
+	FROM baby_names
+)
+
+SELECT *
+FROM MAIN
+WHERE row_num = 2
+
+--ASSIGNMENT: Value within a window
+----Provide a list of the 2nd most popular product within each order
+SELECT * FROM orders;
+
+WITH pop_orders AS ( 
+	SELECT 
+		order_id
+		,product_id
+		,units
+		,ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY units DESC) AS row_num
+
+	FROM orders
+)
+
+SELECT 
+	order_id
+	,product_id
+	,units
+FROM pop_orders
+WHERE row_num = 2
