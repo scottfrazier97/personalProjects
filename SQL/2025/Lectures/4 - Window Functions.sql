@@ -60,3 +60,33 @@ FROM orders;
 ---NTILE
 ---CUME_DIST
 ---PERCENT_RANK
+
+--4) Row Numbering
+SELECT * FROM baby_girl_names
+
+SELECT 
+	name
+	,babies
+	,ROW_NUMBER() OVER (ORDER BY babies DESC) AS [row_num]		--Gives every row a unique number
+	,RANK() OVER (ORDER BY babies DESC) AS [rank]				--Accounts for ties (skips numbers)
+	,DENSE_RANK() OVER (ORDER BY babies DESC) AS [dense_rank]	--Accounts for ties and leaves no missing numbers between
+
+FROM baby_girl_names;
+
+--ASSIGNMENT: Row Numbering
+--Create a product rank field that returns a 1 for the most popular in an order, 2 for second most, so on...
+SELECT * FROM products;
+SELECT * FROM orders;
+
+SELECT 
+	o.order_id
+	,p.product_name
+	,o.units
+	,DENSE_RANK() OVER (PARTITION BY o.order_id ORDER BY o.units DESC) AS [product_rank]
+
+FROM orders o
+	
+	LEFT JOIN products p
+	ON o.product_id = p.product_id;
+
+--5) Value within a window (First, Last, NTH Value)
