@@ -163,3 +163,28 @@ SELECT
 	,units
 FROM pop_orders
 WHERE row_num = 2
+
+
+--6) Value relative to a row (LEAD and LAG)
+--For both LAG and LEAD, you can specify an offset which tells SQL how many rows to skip
+
+--LAG (allows you to retrieve a value from the previous row, within each window)
+SELECT 
+	country
+	,year
+	,happiness_score
+	,LAG(happiness_score) OVER (PARTITION BY country ORDER BY year) AS prior_happiness_score
+
+FROM happiness_scores;
+
+--LEAD (allows you to retrieve a value from the next row, within each window)
+SELECT 
+	country
+	,year
+	,happiness_score
+	,LEAD(happiness_score) OVER (PARTITION BY country ORDER BY year) AS next_happiness_score
+
+FROM happiness_scores;
+
+
+
