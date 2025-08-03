@@ -210,6 +210,70 @@ SELECT
 	,(total_units - LAG(total_units) OVER (PARTITION BY customer_id ORDER BY order_id)) AS diff_units
 
 FROM prior_cte
-ORDER BY customer_id
+ORDER BY customer_id;
 
---
+--7) Statistical Functions
+
+--NTILE() divides the rows in a window into a specified number of percentiles
+--Ex: View the top 25% of happiness scores for each region
+
+WITH perc_CTE AS (
+	SELECT
+		region
+		,country
+		,happiness_score
+
+		--NTILE(4) means the range of 100% of the rows in each window is divided into 4 groups of 25%,
+		--with 1 representing the top percentile group, and 4 being the bottom
+		,NTILE(4) OVER (PARTITION BY region ORDER BY happiness_score DESC) AS hs_percentile
+
+	FROM happiness_scores
+	WHERE year = 2023
+)
+
+SELECT 
+	region
+	,country
+	,happiness_score	
+	,hs_percentile
+
+FROM perc_CTE
+WHERE hs_percentile = 1
+
+--ASSIGNMENT: Statistical Functions
+--Create a rewards program for our top 1% of customers. Pull a list of top 1% of customers in terms of how
+--they have spent with us.
+
+WITH totalspend_CTE AS (
+	SELECT
+		o.customer_id
+		,SUM(o.units * p.unit_price) AS total_spend
+
+	FROM orders o
+		
+		LEFT JOIN products p
+			ON o.product_id = p.product_id
+
+	GROUP BY 		
+	o.customer_id
+
+),
+
+PERC_FINAL AS (
+	SELECT 
+		customer_id
+		,total_spend
+
+		--IMPORTANT, we are not partioning by anything because we want to do this across the WHOLE table
+		--, and not doing this affects the number of rows we see in our end result. 32 is proper result COUNT.
+		,NTILE(100) OVER (ORDER BY total_spend DESC) AS hs_percentile
+
+	FROM totalspend_CTE
+)
+
+SELECT *
+FROM PERC_FINAL
+WHERE hs_percentile = 1
+ORDER BY total_spend DESC
+
+
