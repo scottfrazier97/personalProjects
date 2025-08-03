@@ -1,0 +1,1 @@
+--=== Functions by Data Type===--
