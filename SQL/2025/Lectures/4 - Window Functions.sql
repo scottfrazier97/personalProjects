@@ -274,6 +274,23 @@ PERC_FINAL AS (
 SELECT *
 FROM PERC_FINAL
 WHERE hs_percentile = 1
-ORDER BY total_spend DESC
+ORDER BY total_spend DESC;
 
+--===KEY TAKEAWAYS===--
+--Window Functions
+--a) Used to apply a function across windows of data
+--b) Windows refer to groups of rows in a table (region)
+--c) Aggregate functions collapse the rows in each group, but window functions leave rows untouched
 
+--General Syntax
+--a) FUNCTION OVER (PARTITION BY column1 ORDER BY column2)
+--b) OVER indicates that we're writing a window function
+--c) PARTITION BY states how we'd like to split up the rows into groups
+--d) ORDER BY states how the rows within each window should be ordered BEFORE applying the function
+
+--The FUNCTION portion of a window function is applied to each window
+--a) Number rows with ROW_NUMBER(), RANK(), DENSE_RANK()
+--b) Identify values within a window with FIRST_RANK(), LAST_RANK(), NTH_VALUE()
+--c) Return values from relative rows with LEAD() and LAG()
+--d) Use statistical functions like NTILE() for making percentile calculations
+--e) Use aggregate functions like AVG() for making moving average calculations
