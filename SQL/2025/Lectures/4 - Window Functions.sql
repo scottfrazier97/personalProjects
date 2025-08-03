@@ -186,5 +186,30 @@ SELECT
 
 FROM happiness_scores;
 
+--ASSIGNMENT: Value relative to a row
+--Produce a table that contains info about each customer and their orders. Provide the number of units in 
+--each order and the change in units from order to order?
+SELECT * FROM orders;
 
+WITH prior_cte AS (
+	SELECT
+		customer_id
+		,order_id
+		,SUM(units) AS total_units
+	FROM orders
+	GROUP BY 
+		customer_id
+		,order_id
+)
 
+SELECT 
+	customer_id
+	,order_id
+	,total_units
+	,LAG(total_units) OVER (PARTITION BY customer_id ORDER BY order_id) AS prior_units
+	,(total_units - LAG(total_units) OVER (PARTITION BY customer_id ORDER BY order_id)) AS diff_units
+
+FROM prior_cte
+ORDER BY customer_id
+
+--
