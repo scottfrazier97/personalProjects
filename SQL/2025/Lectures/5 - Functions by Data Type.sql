@@ -60,3 +60,18 @@ SELECT
 FROM pm
 GROUP BY pop_millions
 ORDER BY pop_millions;
+
+--3) Cast & Convert
+--Turning our str_value column into a new column with proper FLOAT data type
+--Could also do salary / 1.0 to convert an integer into a FLOAT, but CAST is more formal
+--***FLOATs give APPROXIMATE values, DECIMALs give EXACT
+SELECT 
+	id
+	,str_value
+
+	--Could not previously conduct the multiplication because it was formerly a string value before being CAST
+	,CAST(str_value AS FLOAT) * 2 AS float_value
+
+FROM sample_table;
+
+--ASSIGNMENT:
