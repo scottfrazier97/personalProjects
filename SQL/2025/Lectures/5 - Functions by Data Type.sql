@@ -74,4 +74,27 @@ SELECT
 
 FROM sample_table;
 
---ASSIGNMENT:
+--ASSIGNMENT: Numeric Functions
+--Interested in seeing how many customers have spent $0-$10 on our products, $10-$20 and so on for every $10 range
+WITH num_assignment AS (
+	SELECT 
+	
+		customer_id
+		,SUM(o.units * p.unit_price) AS total_spend
+		,FLOOR(SUM(o.units * p.unit_price) / 10) * 10 AS spend_bin
+
+	FROM orders o
+	
+		LEFT JOIN products p
+		ON o.product_id = p.product_id
+
+	GROUP BY customer_id
+)
+
+SELECT
+	spend_bin
+	,COUNT(customer_id)
+
+FROM num_assignment
+GROUP BY spend_bin
+ORDER BY spend_bin;
