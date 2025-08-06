@@ -98,3 +98,22 @@ SELECT
 FROM num_assignment
 GROUP BY spend_bin
 ORDER BY spend_bin;
+
+--4) Datetime functions
+--Can be applied to datetime columns (date, time, etc)
+
+SELECT 
+	event_name
+	,event_date
+	,YEAR(event_date) AS event_year	--2025
+	,MONTH(event_date) AS event_month	--Integer
+	,DATENAME(m, event_date) AS month_name	--Month name: July, August
+	,DATENAME(dw, event_date) AS dow_name	--Day name: Monday, Tuesday
+	,DATEPART(dw, event_date) AS dow_num	--Day of week number: 2, 3
+	,GETDATE() AS today_datetime	--2025-08-05 19:37:34.343
+	,CAST(GETDATE() AS DATE) AS today_date	--2025-08-05
+	,CAST(GETDATE() AS TIME) AS today_time	--19:37:34.3433333
+	,DATEDIFF(d, event_date, GETDATE()) AS days_since_event
+	,DATEADD(d, 1, CAST(GETDATE() AS DATE)) AS tomorrow_date	--2025-08-06
+
+FROM my_events;
