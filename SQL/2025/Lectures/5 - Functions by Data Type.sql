@@ -117,3 +117,20 @@ SELECT
 	,DATEADD(d, 1, CAST(GETDATE() AS DATE)) AS tomorrow_date	--2025-08-06
 
 FROM my_events;
+
+--ASSIGNMENT: Datetime Functions
+--Provide a Q2 2024 data pull, also want a ship_date column (two days after order_date)
+
+SELECT 
+	order_id
+	,order_date
+	,DATEADD(d, 2, order_date) AS ship_date
+
+FROM orders
+WHERE 
+	MONTH(order_date) BETWEEN 4 AND 6
+	AND YEAR(order_date) = 2024
+
+ORDER BY 
+	order_date
+	,order_id;
