@@ -134,3 +134,51 @@ WHERE
 ORDER BY 
 	order_date
 	,order_id;
+
+--5) String Functions
+--Can be applied to any string column (char, varchar, text, etc.)
+
+SELECT 
+	event_name
+	,event_type
+
+	--TRIM: Removes leading and trailing whitespace
+	--REPLACE: Replaces characters (! in this case) with what we specify (nothing in this case)
+	,TRIM(REPLACE(event_type, '!', '')) AS event_type_clean 
+
+	,event_desc
+	,LEN(event_desc) AS desc_length 	--Return length of a value
+	,UPPER(event_name) AS upper_case_name	--Convert string to UPPERCASE
+	,LOWER(event_name) AS lower_case_name	--Convert string to LOWERCASE
+	,CONCAT(event_name, ' : ', TRIM(REPLACE(event_type, '!', ''))) AS event_name_and_type
+
+FROM my_events;
+
+--ASSIGNMENT: String Functions
+--Provide a column with product_ids that include factory name and product name
+
+--Without CTE solution
+SELECT
+	factory
+	,product_id
+	,CONCAT(REPLACE(REPLACE(factory, '''', ''), ' ', '-'), '-', product_id) AS factory_product_id
+
+FROM products;
+
+--With CTE solution
+WITH factory_strings AS (
+	SELECT
+		factory
+		,product_id
+		,REPLACE(REPLACE(factory, '''', ''), ' ', '-') AS factory_clean
+
+	FROM products
+)
+
+SELECT 
+	factory
+	,product_id
+	,factory_clean
+	,CONCAT(factory_clean, '-', product_id) AS factory_product_id
+
+FROM factory_strings;
