@@ -264,3 +264,31 @@ FROM products;
 	--ELSE SUBSTRING(product_name, CHARINDEX('-', product_name) + 2, LEN(product_name) - CHARINDEX('-', product_name)) 
 
 --7) NULL Functions
+
+--SQL can't do comparison operations against NULL keyword/values, because in the mind of the SQL interpreter
+--A "NULL" value is something that does not exist, and you can't compare against something which doesn't exist.
+--We use IS NULL, or IS NOT NULL in that case.
+SELECT * FROM contacts;
+
+SELECT *
+FROM contacts
+WHERE email IS NULL;
+
+SELECT *
+FROM contacts
+WHERE email IS NOT NULL;
+
+--NULL replacement with as little code as possible (could use a case statement, but that is very verbose)
+SELECT 
+	name
+	,email
+	,alt_email
+	,ISNULL(email, 'no email found') AS contact_email --Manual replacement
+	,ISNULL(email, alt_email) AS all_contact_email --Filling with other field
+
+	--First check for NULLs, and replace with alt_email, and if there are still NULLs, use manually entered
+	--"no email" string as the replacement value
+	,COALESCE(email, alt_email, 'no email found') 
+
+FROM contacts;
+
