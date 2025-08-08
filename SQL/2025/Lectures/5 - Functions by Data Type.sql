@@ -242,9 +242,25 @@ FROM products;
 --In-depth solution
 SELECT 
 	product_name
+	,CHARINDEX('-', product_name) AS hyphen_index_location
 	,CASE
-		WHEN product_name LIKE '%Wonka Bar%' THEN REPLACE(product_name, 'Wonka Bar - ', '')
-		ELSE product_name
+		WHEN CHARINDEX('-', product_name) = 0 THEN product_name --If no hypen, index will equal 0 and error, return value as is
+		ELSE SUBSTRING(product_name, CHARINDEX('-', product_name) + 2, LEN(product_name) - CHARINDEX('-', product_name)) 
 		END AS new_product_name
 
 FROM products;
+
+
+--Explanation: 
+	--,CASE
+
+	---- If no hypen, index will equal 0 and error, return value as is
+	--WHEN CHARINDEX('-', product_name) = 0 THEN product_name 
+
+	----a) Use hyphen as starting position (second argument), add 2 to begin with first letter of next word after hypen
+	----b) For length (third argument) calculate remaining characters by first getting total length of string, and then
+	----subtracting value we get for hyphen index location: resulting in remaining number of chars...
+	----could also use a number larger than remaining number of chars (unsure about performance issues?)
+	--ELSE SUBSTRING(product_name, CHARINDEX('-', product_name) + 2, LEN(product_name) - CHARINDEX('-', product_name)) 
+
+--7) NULL Functions
