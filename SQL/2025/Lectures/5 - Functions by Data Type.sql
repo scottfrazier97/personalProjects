@@ -286,9 +286,68 @@ SELECT
 	,ISNULL(email, 'no email found') AS contact_email --Manual replacement
 	,ISNULL(email, alt_email) AS all_contact_email --Filling with other field
 
-	--First check for NULLs, and replace with alt_email, and if there are still NULLs, use manually entered
+	--First check for NULLs and replace with alt_email, and if there are still NULLs, use manually entered
 	--"no email" string as the replacement value
 	,COALESCE(email, alt_email, 'no email found') 
 
 FROM contacts;
 
+--ASSIGNMENT: NULL Functions
+--Update NULL values to "Other"...Also, use additional criteria such as updating them to be the same division as 
+--the most common division within their respective factories
+SELECT * FROM products;
+
+WITH divs AS (
+
+	SELECT 
+		factory
+		,division
+		,ROW_NUMBER() OVER (PARTITION BY factory ORDER BY COUNT(division) DESC) AS row_num
+
+	FROM products
+	WHERE division IS NOT NULL
+
+	GROUP BY 
+		factory
+		,division
+),
+
+max_divs AS (
+
+	SELECT 
+		factory
+		,division AS most_common_division
+
+	FROM divs
+	WHERE row_num = 1
+)
+
+SELECT
+	p.product_name
+	,p.factory
+	,p.division AS OG_division
+	,ISNULL(p.division, 'Other') AS division_other
+	,COALESCE(p.division, md.most_common_division,'Other') AS final_division
+
+FROM products p
+
+	LEFT JOIN max_divs md
+		ON p.factory = md.factory
+
+ORDER BY p.factory, final_division DESC;
+
+--=== KEY TAKEAWAYS ===--
+
+--Functions
+--a) Applies a calculation or transformation to rows of data
+--b) An aggregate function applies a calculation to all rows and returns a SINGLE value (COUNT, SUM, etc.)
+--c) A window function performs a calculation across a window of rows (OVER, PARTITION BY, etc.)
+--d) A general function performs a calculation or transformations on all rows
+
+--Data Types
+--a) Specific functions can be applied to specific data types
+--b) If needed, you can CAST or CONVERT a field into a different data type to apply a particular function
+--c) Common numeric functions include LOG, ROUND, etc.
+--d) Common datetime functions include YEAR, DATEDIFF, etc.
+--e) Common string functions include TRIM, REPLACE, REGEXP, etc.
+--f) Common NULL functions include IFNULL, COALESCE, etc.
