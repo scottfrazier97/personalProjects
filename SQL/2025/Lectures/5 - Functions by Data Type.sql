@@ -182,3 +182,69 @@ SELECT
 	,CONCAT(factory_clean, '-', product_id) AS factory_product_id
 
 FROM factory_strings;
+
+--6) String Functions: Pattern Matching
+
+SELECT
+	event_name
+	,SUBSTRING(event_name, 1, 1) AS first_letter --expression, starting position, length
+
+	--Search for first space if one exists, and return index position of that space.
+	--Subtract one from total character count up to that point to return proper number of characters to get 
+	--the "first word"...Also, > 0 logic accounts for if there is a space or not, otherwise if a space doesn't
+	--exist, return the event_name as is. If no space, it will error out with raw -1 logic, so case statement handles this.
+	,CASE 
+		WHEN CHARINDEX(' ', event_name) > 0 THEN SUBSTRING(event_name, 1, CHARINDEX(' ', event_name) - 1)
+		ELSE event_name
+		END AS first_word
+
+FROM my_events;
+
+--LIKE keyword
+
+--Return all rows where event_desc contains the word 'family' anywhere in the string
+SELECT *
+FROM my_events
+WHERE event_desc LIKE '%family%'
+
+--All rows starting with A followed by a space
+SELECT *
+FROM my_events
+WHERE event_desc LIKE 'A %'
+
+--All rows which end with ' season.'
+SELECT *
+FROM my_events
+WHERE event_desc LIKE '% season.'
+
+--REGEX (not currently available in this version of SQL Server, maybe in SQL Server 2025)
+--REGEX takes extra processing power, so not recommended for large datasets
+
+--SELECT 
+--	event_desc
+--	,REGEXP_SUBSTR(event_desc, 'celebration|festival|holiday') AS celebration_word
+
+--FROM my_events;
+
+--ASSIGNMENT: Pattern Matching
+--Remove "Wonka Bar" from any products that contain the term
+
+--Easy solution
+SELECT 
+	product_name
+	,CASE
+		WHEN product_name LIKE '%Wonka Bar%' THEN REPLACE(product_name, 'Wonka Bar - ', '')
+		ELSE product_name
+		END AS new_product_name
+
+FROM products;
+
+--In-depth solution
+SELECT 
+	product_name
+	,CASE
+		WHEN product_name LIKE '%Wonka Bar%' THEN REPLACE(product_name, 'Wonka Bar - ', '')
+		ELSE product_name
+		END AS new_product_name
+
+FROM products;
