@@ -45,6 +45,7 @@ FROM country_stats;
 --FLOOR for binning rows
 --FLOOR creates separate bins for each of the largest integer values less than or equal to specified expression
 --Explained: Take population, divide by 1M, and then create bins for each country based on their FLOORed pop
+--ATTN: FLOOR essentially rounds your result down to the nearest multiple of 10
 WITH pm AS (
 	SELECT
 		country
