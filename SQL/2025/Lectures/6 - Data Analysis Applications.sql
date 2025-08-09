@@ -79,3 +79,24 @@ WITH salary_ranking AS (
 SELECT *
 FROM salary_ranking
 WHERE top_salary = 1;
+
+--ASSIGNMENT: Duplicate values
+--Generate a report of the students and their emails and exclude duplicate student records
+SELECT * FROM students;
+
+WITH duplicate_students AS (
+	SELECT 
+		id
+		,student_name
+		,email
+		,ROW_NUMBER() OVER (PARTITION BY student_name ORDER BY id DESC) AS student_rank
+
+	FROM students
+)
+
+SELECT 
+	id
+	,student_name
+	,email
+FROM duplicate_students
+WHERE student_rank = 1;
