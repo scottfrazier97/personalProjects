@@ -265,3 +265,99 @@ FROM students s
 	ON s.id = sg.student_id
 
 GROUP BY department;
+
+----4) Rolling Calculations
+--Include subtotals, cumulative sums, and moving averages allow you to perform calculations across rows of data
+SELECT * FROM pizza_orders;
+
+--Subtotals accomplished with WITH ROLLUP
+SELECT
+	customer_name
+	,order_date
+	,SUM(price)
+
+FROM pizza_orders
+GROUP BY 
+	customer_name
+	,order_date
+
+WITH ROLLUP --Add after GROUP BY, creates subtotal rows
+
+ORDER BY 
+	customer_name,
+	order_date
+
+
+--Cumulative sums accomplished with SUM() along with a window function
+WITH total_sales AS (
+	SELECT
+		order_date
+		,SUM(price) AS daily_sum
+
+	FROM pizza_orders
+	GROUP BY order_date
+)
+
+SELECT 
+	order_date
+	,SUM(daily_sum) OVER (ORDER BY order_date) AS cumulative_sum --Excluding partition applies function on whole table
+
+FROM total_sales;
+
+--Moving averages accomplished with AVG() along with a window function
+--Ex: calculate 3 year moving average of happiness scores for each country
+--Interpretation: Each row's moving AVG happiness score, is an AVG of current and prior 2 rows
+WITH happ_scores AS (
+	SELECT
+		country
+		,year
+		,happiness_score
+		,ROW_NUMBER() OVER (PARTITION BY country ORDER BY year) AS row_num
+
+	FROM happiness_scores
+)
+
+SELECT
+	country
+	,year
+	,happiness_score
+
+	--Line 326 states to look at 3 previous rows (years) and calculate average happiness score
+	,AVG(happiness_score) OVER (PARTITION BY country ORDER BY year 
+								ROWS BETWEEN 2 PRECEDING AND CURRENT ROW) AS moving_avg_happy
+
+FROM happiness_scores;
+
+--ASSIGNMENT: Rolling Calculations
+--Generate a report that shows the total sales for each month, as well as cumulative sum of sales and the six-month
+--moving average of sales
+SELECT * FROM orders;
+SELECT * FROM products;
+
+WITH total_sales AS (
+	SELECT
+		YEAR(o.order_date) AS order_year
+		,MONTH(o.order_date) AS order_month
+		,SUM((o.units * p.unit_price)) AS total_sales
+
+	FROM orders o
+
+		LEFT JOIN products p
+		ON o.product_id = p.product_id
+
+	GROUP BY 
+		YEAR(o.order_date)
+		,MONTH(o.order_date)
+)
+
+SELECT 
+	order_year
+	,order_month
+	,total_sales
+	,SUM(total_sales) OVER (ORDER BY order_year, order_month) AS cumulative_sum
+	,AVG(total_sales) OVER (ORDER BY order_year, order_month
+							ROWS BETWEEN 5 PRECEDING AND CURRENT ROW) AS six_mo_movingAVG
+
+FROM total_sales
+
+ORDER BY order_year, order_month
