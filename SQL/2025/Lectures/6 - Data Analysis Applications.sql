@@ -185,5 +185,83 @@ FROM students s
 WHERE row_num = 1;
 
 ----3) Pivoting
+--Creating summary tables in SQL
+--Allows us to transform rows into columns to summarize data
+--Can be achieved using CASE statements
+--PIVOT is available in SQL Server though, less code and no need for CASE statements
 
+--Ex: Creating a summary table by pivoting the crust type column in the pizza table
+SELECT * FROM pizza_table;
 
+--OPTION 1: Creates a summary table using PIVOT
+SELECT * FROM (                 -- Select everything from the subquery (the pivot will be applied here)
+    SELECT
+        category,               -- Pizza category (e.g., Chicken, Classic)
+        crust_type,             -- Type of crust (e.g., Gluten-Free, Thin, Standard)
+        pizza_name              -- Name of the pizza
+
+    FROM pizza_table            -- Source table containing pizza data
+) PizzaResults                  -- Alias for the subquery used in the pivot
+PIVOT (
+    COUNT(crust_type)           -- Aggregate: count how many pizzas have each crust type
+    FOR crust_type              -- The column whose distinct values will become pivoted columns
+    IN (
+        [Gluten-Free Crust],    -- Column for Gluten-Free Crust count
+        [Thin Crust],           -- Column for Thin Crust count
+        [Standard Crust]        -- Column for Standard Crust count
+		)
+) AS PivotTable;                -- Alias for the resulting pivoted table
+
+--OPTION 2: Creating summary table using CASE statements
+SELECT
+	category
+	,SUM(CASE WHEN crust_type = 'Gluten-Free Crust'	THEN 1 ELSE 0 END) AS [Gluten-Free Crust]
+	,SUM(CASE WHEN crust_type = 'Standard Crust'	THEN 1 ELSE 0 END) AS [Standard Crust]
+	,SUM(CASE WHEN crust_type = 'Thin Crust'		THEN 1 ELSE 0 END) AS [Thin Crust]
+
+FROM pizza_table
+GROUP BY category;
+
+--ASSIGNMENT: Pivoting
+--Create a summary table which shows average grade for each department and grade level
+SELECT * FROM students;
+SELECT * FROM student_grades;
+
+--PIVOT
+SELECT * FROM (                 
+    SELECT
+        sg.department,               
+        s.grade_level,             
+        sg.final_grade              
+
+    FROM students s
+	
+		INNER JOIN student_grades sg
+		ON s.id = sg.student_id
+
+) GradeResults                   
+PIVOT (
+    AVG(final_grade)           
+    FOR grade_level              
+    IN (
+        [9],    
+        [10],           
+        [11],
+		[12]
+		)
+) AS PivotTable;   
+
+--CASE statment
+SELECT
+	sg.department
+	,AVG(CASE WHEN s.grade_level = 9	THEN sg.final_grade END) AS [Freshman]
+	,AVG(CASE WHEN s.grade_level = 10	THEN sg.final_grade END) AS [Sophomore]
+	,AVG(CASE WHEN s.grade_level = 11	THEN sg.final_grade END) AS [Junior]
+	,AVG(CASE WHEN s.grade_level = 12	THEN sg.final_grade END) AS [Senior]
+
+FROM students s
+	
+	INNER JOIN student_grades sg
+	ON s.id = sg.student_id
+
+GROUP BY department;
