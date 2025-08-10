@@ -361,3 +361,23 @@ SELECT
 FROM total_sales
 
 ORDER BY order_year, order_month
+
+--=== KEY TAKEAWAYS ===--
+
+--Duplicate Values
+--a) Use HAVING to view duplicate rows, and DISTINCT or window functions to exclude duplicate rows
+
+--MIN / MAX filtering
+--a) Allows you to filter data within each group
+--b) Can be accomplished with a combination of GROUP BY and JOIN, or with a window function
+
+--Pivoting
+--Transforms row values into columns to summarize your data
+--Can be accomplished using CASE statements with aggregate functions, or PIVOT in some SQL applications
+
+--Rolling Calculations
+--Include subtotals, cumulative sums & moving averages
+--Can be done with WITH ROLLUP keywords, or window functions with SUM() and AVG()
+
+--Imputing NULL values
+--Options include using hard coded values, column aggregations, relative row values and more
