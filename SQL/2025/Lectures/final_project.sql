@@ -147,9 +147,167 @@ WHERE [Flag: Billions] = 1;
 
 -- PART III: PLAYER CAREER ANALYSIS
 -- 1. View the players table and find the number of players in the table
--- 2. For each player, calculate their age at their first game, their last game, and their career length (all in years). Sort from longest career to shortest career.
+SELECT TOP 1000 * FROM players;
+
+SELECT 
+	COUNT(DISTINCT playerID) AS distinct_player_count
+	,COUNT(*) AS full_record_count
+
+FROM players;
+
+-- 2. For each player, calculate (all in years), Sort from longest career to shortest career.:
+--a) Age at their first game
+--b) Age at their last game
+--c) Their career length
+
+WITH full_birthdays AS (
+	SELECT
+		playerID
+		,nameFirst
+		,nameLast
+		,birthYear
+		,debut
+		,finalGame
+		,CAST(CONCAT(COALESCE(birthYear, 1900), '-', COALESCE(birthMonth, 1), '-', COALESCE(birthDay, 1)) AS DATE) AS full_birthday
+
+	FROM players
+)
+
+SELECT 
+	playerID
+	,nameFirst
+	,nameLast
+	,DATEDIFF(year, full_birthday, debut) AS age_first_game
+	,DATEDIFF(year, full_birthday, finalGame) AS age_last_game
+	,DATEDIFF(year, debut, finalGame) AS career_length
+
+FROM full_birthdays
+ORDER BY career_length DESC;
+
+
 -- 3. What team did each player play on for their starting and ending years?
+SELECT TOP 1000 * FROM players;
+SELECT TOP 1000 * FROM salaries;
+
+--My initial solution:
+WITH player_teams AS (
+	SELECT
+		p.playerID
+		,p.nameFirst
+		,p.nameLast
+		,s.yearID
+		,s.teamID
+		,ROW_NUMBER() OVER (PARTITION BY p.playerID ORDER BY s.yearID ASC) AS first_team
+		,ROW_NUMBER() OVER (PARTITION BY p.playerID ORDER BY s.yearID DESC) AS last_team
+
+	FROM players p
+		
+		INNER JOIN salaries s
+		ON p.playerID = s.playerID
+
+	--ORDER BY playerID, yearID
+),
+
+first_team_CTE AS (
+	SELECT 
+		playerID
+		,nameFirst
+		,nameLast
+		,teamID AS first_team_name
+
+	FROM player_teams
+	WHERE 
+		first_team = 1
+
+	GROUP BY 
+		playerID
+		,nameFirst
+		,nameLast
+		,teamID
+),
+
+last_team_CTE AS (
+	SELECT 
+		playerID
+		,nameFirst
+		,nameLast
+		,teamID AS last_team_name
+
+	FROM player_teams
+	WHERE 
+		last_team = 1
+
+	GROUP BY 
+		playerID
+		,nameFirst
+		,nameLast
+		,teamID
+)
+
+SELECT 
+	pt.playerID
+	,pt.nameFirst
+	,pt.nameLast
+	,ft.first_team_name
+	,lt.last_team_name
+
+FROM player_teams pt
+	
+	LEFT JOIN first_team_CTE ft
+	ON pt.playerID = ft.playerID
+
+	LEFT JOIN last_team_CTE lt
+	ON pt.playerID = lt.playerID
+
+GROUP BY 
+	pt.playerID
+	,pt.nameFirst
+	,pt.nameLast
+	,ft.first_team_name
+	,lt.last_team_name
+
+ORDER BY playerID;
+
+
+--Program's (leaner) solution
+SELECT 
+	p.nameGiven
+	,s.yearId AS start_year
+	,s.teamID AS start_team
+	,e.yearID AS end_year
+	,e.teamID AS end_team
+
+FROM players p
+	
+	INNER JOIN salaries s
+	ON p.playerID = s.playerID
+	AND YEAR(p.debut) = s.yearID
+
+	INNER JOIN salaries e
+	ON p.playerID = e.playerID
+	AND YEAR(p.finalGame) = e.yearID
+
 -- 4. How many players started and ended on the same team and also played for over a decade?
+SELECT 
+	p.nameGiven
+	,s.yearId AS start_year
+	,s.teamID AS start_team
+	,e.yearID AS end_year
+	,e.teamID AS end_team
+
+FROM players p
+	
+	INNER JOIN salaries s
+	ON p.playerID = s.playerID
+	AND YEAR(p.debut) = s.yearID
+
+	INNER JOIN salaries e
+	ON p.playerID = e.playerID
+	AND YEAR(p.finalGame) = e.yearID
+
+WHERE 
+	s.teamID = e.teamID
+	AND (e.yearID - s.yearID) > 10
 
 -- PART IV: PLAYER COMPARISON ANALYSIS
 -- 1. View the players table
