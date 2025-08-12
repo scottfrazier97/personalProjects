@@ -285,7 +285,7 @@ FROM players p
 
 	INNER JOIN salaries e
 	ON p.playerID = e.playerID
-	AND YEAR(p.finalGame) = e.yearID
+	AND YEAR(p.finalGame) = e.yearID;
 
 -- 4. How many players started and ended on the same team and also played for over a decade?
 SELECT 
@@ -307,10 +307,28 @@ FROM players p
 
 WHERE 
 	s.teamID = e.teamID
-	AND (e.yearID - s.yearID) > 10
+	AND (e.yearID - s.yearID) > 10;
 
 -- PART IV: PLAYER COMPARISON ANALYSIS
 -- 1. View the players table
+SELECT TOP 1000 * FROM players;
+
 -- 2. Which players have the same birthday?
+SELECT 
+	p1.nameGiven
+	,CAST(CONCAT(COALESCE(p1.birthYear, 1900), '-', COALESCE(p1.birthMonth, 1), '-', COALESCE(p1.birthDay, 1)) AS DATE) AS full_birthday_1
+	,p2.nameGiven
+	,CAST(CONCAT(COALESCE(p2.birthYear, 1900), '-', COALESCE(p2.birthMonth, 1), '-', COALESCE(p2.birthDay, 1)) AS DATE) AS full_birthday_2
+
+FROM players p1
+
+	INNER JOIN players p2
+		ON p1.birthYear = p2.birthYear
+		AND p1.birthMonth = p2.birthMonth
+		AND p1.birthDay = p2.birthDay
+
+WHERE 
+	p1.nameGiven <> p2.nameGiven
+
 -- 3. Create a summary table that shows for each team, what percent of players bat right, left and both
 -- 4. How have average height and weight at debut game changed over the years, and what's the decade-over-decade difference?
