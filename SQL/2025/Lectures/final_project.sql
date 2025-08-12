@@ -60,9 +60,90 @@ ORDER BY
 
 -- PART II: SALARY ANALYSIS
 -- 1. View the salaries table
+SELECT TOP 1000 * FROM salaries;
+
 -- 2. Return the top 20% of teams in terms of average annual spending
+WITH team_averages AS (
+	SELECT
+		teamID
+		,yearID
+		,SUM(salary) AS totals
+
+	FROM salaries
+	GROUP BY 
+		teamID
+		,yearID
+),
+
+percentages AS (
+	SELECT 
+		teamID
+		,AVG(CAST(totals AS BIGINT)) AS avg_salary
+		,NTILE(5) OVER (ORDER BY AVG(CAST(totals AS BIGINT)) DESC) AS avgsalary_percentile
+
+	FROM team_averages
+	GROUP BY teamID
+)
+
+SELECT *
+FROM percentages
+WHERE avgsalary_percentile = 1
+ORDER BY avg_salary DESC;
+
 -- 3. For each team, show the cumulative sum of spending over the years
+WITH yearly_sums AS (
+	SELECT
+		teamID
+		,yearID
+		,SUM(salary) AS salary_sum
+
+	FROM salaries
+	GROUP BY teamID, yearID
+)
+
+SELECT 
+	teamID
+	,yearID
+	,SUM(CAST(salary_sum AS BIGINT)) OVER (PARTITION BY teamID ORDER BY yearID) AS cumulative_sum 
+
+FROM yearly_sums
+ORDER BY teamID, yearID;
+
 -- 4. Return the first year that each team's cumulative spending surpassed 1 billion
+WITH yearly_sums AS (
+	SELECT
+		teamID
+		,yearID
+		,SUM(salary) AS salary_sum
+
+	FROM salaries
+	GROUP BY teamID, yearID
+),
+
+csum AS (
+	SELECT 
+		teamID
+		,yearID
+		,SUM(CAST(salary_sum AS BIGINT)) OVER (PARTITION BY teamID ORDER BY yearID) AS cumulative_sum 
+	
+	FROM yearly_sums
+),
+
+ranking AS (
+	SELECT
+		*
+		,ROW_NUMBER() OVER (PARTITION BY teamID ORDER BY cumulative_sum) AS [Flag: Billions]
+
+	FROM csum
+	WHERE cumulative_sum > 1000000000
+)
+
+SELECT 
+	teamID
+	,yearID
+	,FORMAT(cumulative_sum / 1000000000.0, 'N2') + 'B' AS [CumulativeSum]
+FROM ranking
+WHERE [Flag: Billions] = 1;
 
 -- PART III: PLAYER CAREER ANALYSIS
 -- 1. View the players table and find the number of players in the table
