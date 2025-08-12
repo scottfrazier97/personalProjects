@@ -328,7 +328,57 @@ FROM players p1
 		AND p1.birthDay = p2.birthDay
 
 WHERE 
-	p1.nameGiven <> p2.nameGiven
+	p1.nameGiven <> p2.nameGiven;
 
 -- 3. Create a summary table that shows for each team, what percent of players bat right, left and both
+--CAST to DECIMAL is necessary because in the CTE, all computed columns are integers and default to int types.
+--When we later divide integers, SQL Server does integer division, which truncates to zero if numerator is smaller than denominator
+
+WITH batting_totals AS (
+	SELECT
+		s.teamID               
+		,CAST(SUM(CASE WHEN p.bats = 'R' THEN 1 ELSE 0 END) AS decimal(10,2)) AS [Right Handed]
+		,CAST(SUM(CASE WHEN p.bats = 'L' THEN 1 ELSE 0 END) AS decimal(10,2)) AS [Left Handed]
+		,CAST(SUM(CASE WHEN p.bats = 'B' THEN 1 ELSE 0 END) AS decimal(10,2)) AS [Both]
+		,CAST(COUNT(*) AS decimal(10,2)) AS total
+
+	FROM salaries s
+
+		INNER JOIN players p
+		ON s.playerID = p.playerID
+
+	GROUP BY 
+		s.teamID
+)
+
+SELECT 
+	teamID
+	,FORMAT(([Right Handed] / total) * 100.0, '00.00') AS [Right Handed Perc]
+	,FORMAT(([Left Handed] / total) * 100.0, '00.00') AS [Left Handed Perc]
+	,FORMAT(([Both] / total) * 100.0, '00.00') AS [Both]
+
+FROM batting_totals;
+
 -- 4. How have average height and weight at debut game changed over the years, and what's the decade-over-decade difference?
+SELECT TOP 1000 * FROM players;
+
+WITH averages AS (
+	SELECT 
+		ROUND(YEAR(debut), -1) AS year_decade
+		,AVG(weight) AS avg_weight
+		,AVG(height) AS avg_height
+
+	FROM players
+	GROUP BY 
+		ROUND(YEAR(debut), -1)
+)
+
+SELECT 
+	year_decade
+	,avg_weight
+	,(LAG(avg_weight) OVER (ORDER BY year_decade) - avg_weight) * -1 AS avg_weight_change
+	,avg_height
+	,(LAG(avg_height) OVER (ORDER BY year_decade) - avg_height) * -1 AS avg_height_change
+
+FROM averages
+WHERE year_decade IS NOT NULL;
