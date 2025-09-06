@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Overwatch Stats</title>
+</head>
+<body>
+    <h1>Filter Stats</h1>
+    <form action="/filter" method="get">
+        <label for="hero">Hero:</label>
+        <select name="hero" id="hero">
+            {% for h in heroes %}
+            <option value="{{ h }}">{{ h }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="season">Season:</label>
+        <select name="season" id="season">
+            {% for s in seasons %}
+            <option value="{{ s }}">{{ s }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="stat">Stat:</label>
+        <select name="stat" id="stat">
+            {% for st in stats %}
+            <option value="{{ st }}">{{ st }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Show</button>
+    </form>
+</body>
+</html>
