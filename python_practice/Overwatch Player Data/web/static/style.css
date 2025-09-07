@@ -1,34 +1,9 @@
-/* style.css */
-.multi-select {
-    position: relative;
-    display: inline-block;
-    width: 200px;
-    margin-bottom: 10px;
-}
-
-.multi-select .select-box {
-    border: 1px solid #ccc;
-    padding: 5px;
-    cursor: pointer;
-    background-color: #fff;
-}
-
-.multi-select .checkbox-list {
+#heroImage{
+    height: 200px;
+    width: auto;
     display: none;
-    position: absolute;
-    background: white;
-    border: 1px solid #ccc;
-    max-height: 150px;
-    overflow-y: auto;
-    z-index: 100;
-    width: 100%;
-}
+    border-radius: 10px;
+    margin-top: 10px;
+    box-shadow: 5px 5px 10px #0d6efd;
+};
 
-.multi-select .checkbox-list label {
-    display: block;
-    padding: 3px 5px;
-}
-
-.multi-select.active .checkbox-list {
-    display: block;
-}
