@@ -9,7 +9,7 @@ df = load_data()
 def home():
     heroes = sorted(df["Hero"].unique())
     seasons = sorted(df["Season"].unique())
-    stats = [col for col in df.columns if col not in ["Hero", "Season"]]
+    stats = [col for col in df.columns if col not in ["Hero", "Season", "Role"]]
     return render_template("index.html", heroes=heroes, seasons=seasons, stats=stats)
 
 @app.route("/filter")

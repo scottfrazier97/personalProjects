@@ -10,4 +10,14 @@ def load_data():
     
     # Load the CSV
     df = pd.read_csv(CSV_PATH, encoding='latin1')
+
+    # Ensure these columns are text/string
+    text_cols = ["Season", "Hero", "Role"]
+    df[text_cols] = df[text_cols].astype("string")
+
+    # Convert all other columns to numeric safely
+    for col in df.columns:
+        if col not in text_cols:
+            df[col] = pd.to_numeric(df[col], errors="coerce")
+
     return df
