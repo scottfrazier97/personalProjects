@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from data_loader import load_data
+import pandas as pd
 
 app = Flask(__name__)
 df = load_data()
@@ -61,6 +62,30 @@ def get_options():
 
     return jsonify({"seasons": seasons, "stats": stats})
 
+@app.route("/chart_data")
+def chart_data():
+    hero = request.args.get("hero")
+    stat = request.args.get("stat")
+
+    if hero and stat:
+        filtered = df[df["Hero"] == hero]
+
+        seasons = filtered["Season"].tolist()
+        values = filtered[stat].tolist()
+
+        # Convert numpy values safely
+        clean_values = []
+        for v in values:
+            if hasattr(v, "item"):
+                v = v.item()
+            clean_values.append(v if pd.notna(v) else None)
+
+        return jsonify({
+            "seasons": seasons,
+            "values": clean_values
+        })
+
+    return jsonify({"seasons": [], "values": []})
 
 
 if __name__ == "__main__":
