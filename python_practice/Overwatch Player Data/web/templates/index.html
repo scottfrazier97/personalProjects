@@ -18,7 +18,7 @@
     <div class="container mt-5">
         <h1 class="mb-4 text-center">Hero Highlights</h1>
         <form id="filterForm" method="get" class="row g-3 p-4 border rounded shadow bg-light">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="hero" class="form-label">Hero:</label>
                 <select id="hero" name="hero" class="form-select">
                     {% for h in heroes %}
@@ -27,39 +27,37 @@
                 </select>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="season" class="form-label">Season:</label>
                 <select id="season" name="season" class="form-select">
                     {% for s in seasons %}
                     <option value="{{ s }}">{{ s }}</option>
                     {% endfor %}
                 </select>
+                <div class="col-12 text-center mt-3">
+                    <button type="submit" class="btn btn-primary btn-lg">Show</button>
+                </div>   
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="stat" class="form-label">Stat:</label>
                 <select id="stat" name="stat" class="form-select">
                     {% for st in stats %}
                     <option value="{{ st }}">{{ st }}</option>
                     {% endfor %}
-                </select>
+                </select>     
             </div>
 
-            <div class="col-12 text-center mt-3">
-                <button type="submit" class="btn btn-primary btn-lg">Show</button>
-            </div>        
-        </form>
-
-
-        <div class="row mt-3">
-            <!-- Left column: hero image + stat -->
-            <div class="col-md-6 text-center">
+            <div class="col-md-3 text-center">
                 <img id="heroImage" src="" alt="Hero Image" class="img-fluid" style="border-radius:10px; margin-bottom:20px;">
                 <div id="result" style="font-weight:bold;"></div>
             </div>
 
-            <!-- Right column: chart -->
-            <div class="col-md-6 text-center">
+        </form>
+
+
+        <div class="row mt-3">
+            <div class="col-md-12 text-center">
                 <canvas id="statChart" width="400" height="200"></canvas>
             </div>
         </div>

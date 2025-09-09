@@ -7,8 +7,8 @@ df = load_data()
 
 @app.route("/")
 def home():
-    heroes = sorted(df["Hero"].unique())
-    seasons = sorted(df["Season"].unique())
+    heroes = ["All Heroes"] + sorted(df["Hero"].unique().tolist())
+    seasons = ["All Seasons"] + sorted(df["Season"].unique().tolist())
     stats = [col for col in df.columns if col not in ["Hero", "Season", "Role"]]
     return render_template("index.html", heroes=heroes, seasons=seasons, stats=stats)
 
@@ -19,23 +19,38 @@ def filter_data():
     stat = request.args.get("stat")
 
     if hero and season and stat:
-        row = df[(df["Hero"] == hero) & (df["Season"] == season)]
-        if not row.empty:
-            value = row.iloc[0][stat]
+        # Start with full dataset
+        filtered = df.copy()
+
+        # Apply filters only if not "All"
+        if hero != "All Heroes":
+            filtered = filtered[filtered["Hero"] == hero]
+        if season != "All Seasons":
+            filtered = filtered[filtered["Season"] == season]
+
+        if not filtered.empty:
+            # Sum across remaining rows
+            total = filtered[stat].sum()
 
             # Convert numpy scalar to Python type
-            if hasattr(value, "item"):
-                value = value.item()
+            if hasattr(total, "item"):
+                total = total.item()
 
-            # Add thousands separator if numeric
-            if isinstance(value, (int, float)):
-                value = f"{value:,}"
+            # Format with commas if numeric
+            if isinstance(total, (int, float)):
+                total = f"{total:,}"
 
-            return f"{hero} ({season}) - {stat}: {value}"
+            # Label depends on scope
+            hero_label = hero if hero != "All Heroes" else "All Heroes"
+            season_label = season if season != "All Seasons" else "All Seasons"
+
+            return f"{hero_label} ({season_label}) - {stat}: {total}"
+
         else:
             return "No data found!"
     else:
         return "Missing filter values!"
+
 
 @app.route("/options")
 def get_options():
@@ -67,25 +82,26 @@ def chart_data():
     hero = request.args.get("hero")
     stat = request.args.get("stat")
 
-    if hero and stat:
-        filtered = df[df["Hero"] == hero]
+    if not hero or not stat:
+        return jsonify({"error": "Missing filters"}), 400
 
-        seasons = filtered["Season"].tolist()
-        values = filtered[stat].tolist()
+    filtered = df.copy()
 
-        # Convert numpy values safely
-        clean_values = []
-        for v in values:
-            if hasattr(v, "item"):
-                v = v.item()
-            clean_values.append(v if pd.notna(v) else None)
+    if hero != "All Heroes":
+        # Single hero selected
+        filtered = filtered[filtered["Hero"] == hero]
 
-        return jsonify({
-            "seasons": seasons,
-            "values": clean_values
-        })
+    # Always group by Season
+    grouped = filtered.groupby("Season")[stat].sum().reset_index()
 
-    return jsonify({"seasons": [], "values": []})
+    # Sort by Season (optional, if your seasons are numeric or ordered labels)
+    grouped = grouped.sort_values("Season")
+
+    labels = grouped["Season"].tolist()
+    values = grouped[stat].tolist()
+
+    return jsonify({"labels": labels, "values": values})
+
 
 
 if __name__ == "__main__":

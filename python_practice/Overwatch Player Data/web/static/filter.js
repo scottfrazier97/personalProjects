@@ -100,24 +100,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const season = seasonSelect.value;
         const stat = statSelect.value;
 
-        // Update text result
-        fetch(`/filter?hero=${encodeURIComponent(hero)}&season=${encodeURIComponent(season)}&stat=${encodeURIComponent(stat)}`)
-            .then(response => response.text())
-            .then(data => {
-                resultDiv.textContent = data;
-            })
-            .catch(err => {
-                resultDiv.textContent = 'Error fetching data';
-                console.error(err);
-            });
+    // Update text result
+    fetch(`/filter?hero=${encodeURIComponent(hero)}&season=${encodeURIComponent(season)}&stat=${encodeURIComponent(stat)}`)
+        .then(response => response.text())
+        .then(data => {
+            resultDiv.textContent = data;
+        })
+        .catch(err => {
+            resultDiv.textContent = 'Error fetching data';
+            console.error(err);
+        });
 
-        // Update chart
-        fetch(`/chart_data?hero=${encodeURIComponent(hero)}&stat=${encodeURIComponent(stat)}`)
-            .then(response => response.json())
-            .then(data => {
-                updateChart(data.seasons, data.values, hero, stat);
-            })
-            .catch(err => console.error("Error fetching chart data:", err));
+    // Update chart
+    fetch(`/chart_data?hero=${encodeURIComponent(hero)}&season=${encodeURIComponent(season)}&stat=${encodeURIComponent(stat)}`)
+        .then(response => response.json())
+        .then(data => {
+            updateChart(data.labels, data.values, hero, stat);
+        })
+        .catch(err => console.error("Error fetching chart data:", err));
+
     });
 
     // --- Initialize on page load ---
