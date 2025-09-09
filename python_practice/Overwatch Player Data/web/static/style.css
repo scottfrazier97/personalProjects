@@ -1,8 +1,46 @@
-#heroImage{
+#heroImage {
     height: 200px;
     width: auto;
     display: none;
     border-radius: 10px;
     margin-top: 10px;
     box-shadow: 3px 3px 10px #0d6efd;
-};
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #2b3e51;
+}
+
+ul li {
+    float: left;    
+}
+
+.nav-links {
+    position: relative;        
+    display: inline-block;     
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;     
+}
+
+.nav-links::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 5px;                  /* adjust slightly if needed */
+    height: 2px;
+    width: 100%;                 /* full width of the text */
+    background-color: white;
+    transform: scaleX(0);        /* start collapsed */
+    transform-origin: center;    /* grow from the middle */
+    transition: transform 0.5s ease-in-out;
+}
+
+.nav-links:hover::after {
+    transform: scaleX(1);        /* expand to full width */
+}
