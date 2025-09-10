@@ -1,5 +1,5 @@
 #heroImage {
-    height: 200px;
+    height: 175px;
     width: auto;
     display: none;
     border-radius: 10px;
@@ -45,7 +45,9 @@ ul li {
     transform: scaleX(1);       
 }
 
-
+.form-select {
+    border-inline-start: 5px solid #0d6efd;
+}
 
 #show-button {
   position: relative;
