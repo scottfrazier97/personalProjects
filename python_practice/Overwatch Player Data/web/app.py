@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from data_loader import load_data
 import pandas as pd
+import numpy as np
 
 app = Flask(__name__)
 df = load_data()
@@ -103,6 +104,33 @@ def chart_data():
     return jsonify({"labels": labels, "values": values})
 
 
+@app.route('/summary')
+def summary():
+    hero = request.args.get("hero")
+    season = request.args.get("season")
+    stat = request.args.get("stat")
+
+    # Filter your dataframe based on inputs
+    df_filtered = df.copy()
+    if hero != "All Heroes":
+        df_filtered = df_filtered[df_filtered["Hero"] == hero]
+    if season != "All Seasons":
+        df_filtered = df_filtered[df_filtered["Season"] == season]
+
+    values = df_filtered[stat].dropna().values
+
+    if len(values) == 0:
+        return jsonify({"error": "No data"})
+
+    summary = {
+        "min": float(np.min(values)),
+        "q1": float(np.percentile(values, 25)),
+        "median": float(np.percentile(values, 50)),
+        "q3": float(np.percentile(values, 75)),
+        "max": float(np.max(values))
+    }
+    return jsonify(summary)
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
