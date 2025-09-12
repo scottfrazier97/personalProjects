@@ -10,127 +10,141 @@ df = load_data()
 def home():
     heroes = ["All Heroes"] + sorted(df["Hero"].unique().tolist())
     seasons = ["All Seasons"] + sorted(df["Season"].unique().tolist())
+    roles = ["All Roles"] + sorted(df["Role"].unique().tolist())
+
     stats = [col for col in df.columns if col not in ["Hero", "Season", "Role"]]
-    return render_template("index.html", heroes=heroes, seasons=seasons, stats=stats)
+    return render_template("index.html", heroes=heroes, seasons=seasons, stats=stats, roles=roles)
 
 @app.route("/filter")
 def filter_data():
-    hero = request.args.get("hero")
-    season = request.args.get("season")
+    hero = request.args.get("hero", "All Heroes")
+    season = request.args.get("season", "All Seasons")
+    role = request.args.get("role", "All Roles")
     stat = request.args.get("stat")
 
-    if hero and season and stat:
-        # Start with full dataset
-        filtered = df.copy()
-
-        # Apply filters only if not "All"
-        if hero != "All Heroes":
-            filtered = filtered[filtered["Hero"] == hero]
-        if season != "All Seasons":
-            filtered = filtered[filtered["Season"] == season]
-
-        if not filtered.empty:
-            # Sum across remaining rows
-            total = filtered[stat].sum()
-
-            # Convert numpy scalar to Python type
-            if hasattr(total, "item"):
-                total = total.item()
-
-            # Format with commas if numeric
-            if isinstance(total, (int, float)):
-                total = f"{total:,}"
-
-            # Label depends on scope
-            hero_label = hero if hero != "All Heroes" else "All Heroes"
-            season_label = season if season != "All Seasons" else "All Seasons"
-
-            return f"{hero_label} ({season_label}) - {stat}: {total}"
-
-        else:
-            return "No data found!"
-    else:
+    if not stat:
         return "Missing filter values!"
 
+    filtered = df.copy()
+
+    if hero != "All Heroes":
+        filtered = filtered[filtered["Hero"] == hero]
+    if season != "All Seasons":
+        filtered = filtered[filtered["Season"] == season]
+    if role != "All Roles":
+        filtered = filtered[filtered["Role"] == role]
+
+    if filtered.empty:
+        return "No data found!"
+
+    total = filtered[stat].sum()
+    if hasattr(total, "item"):
+        total = total.item()
+    if isinstance(total, (int, float)):
+        total = f"{total:,}"
+
+    # Build label dynamically based on filters
+    labels = []
+    if hero != "All Heroes":
+        labels.append(hero)
+    if season != "All Seasons":
+        labels.append(season)
+    if role != "All Roles":
+        labels.append(role)
+
+    label_str = " - ".join(labels) if labels else "All Data"
+    return f"{label_str} - {stat}: {total}"
 
 @app.route("/options")
 def get_options():
     hero = request.args.get("hero")
     season = request.args.get("season")
-
+    role = request.args.get("role")
+    
     filtered = df.copy()
+    
+    # Apply filters if provided
+    if hero and hero != "All Heroes":
+        filtered = filtered[filtered["Hero"] == hero]
+    if season and season != "All Seasons":
+        filtered = filtered[filtered["Season"] == season]
+    if role and role != "All Roles":
+        filtered = filtered[filtered["Role"] == role]
 
-    # Only filter down by one dimension if provided
-    if hero and not season:
-        filtered = df[df["Hero"] == hero]
-    elif season and not hero:
-        filtered = df[df["Season"] == season]
-    elif hero and season:
-        # Keep all data for that hero, but note the chosen season
-        filtered = df[df["Hero"] == hero]
-
-    # Build dropdowns
     seasons = sorted(filtered["Season"].dropna().unique().tolist())
-    stats = [
-        col for col in filtered.columns
-        if col not in ["Hero", "Season", "Role"] and filtered[col].notna().any()
-    ]
+    roles = sorted(filtered["Role"].dropna().unique().tolist())
+    stats = [col for col in filtered.columns if col not in ["Hero", "Season", "Role"] and filtered[col].notna().any()]
 
-    return jsonify({"seasons": seasons, "stats": stats})
+    return jsonify({"seasons": seasons, "roles": roles, "stats": stats})
 
 @app.route("/chart_data")
 def chart_data():
-    hero = request.args.get("hero")
+    hero = request.args.get("hero", "All Heroes")
+    role = request.args.get("role", "All Roles")
     stat = request.args.get("stat")
 
-    if not hero or not stat:
+    if not stat:
         return jsonify({"error": "Missing filters"}), 400
 
     filtered = df.copy()
-
     if hero != "All Heroes":
-        # Single hero selected
         filtered = filtered[filtered["Hero"] == hero]
+    if role != "All Roles":
+        filtered = filtered[filtered["Role"] == role]
 
-    # Always group by Season
     grouped = filtered.groupby("Season")[stat].sum().reset_index()
-
-    # Sort by Season (optional, if your seasons are numeric or ordered labels)
     grouped = grouped.sort_values("Season")
 
-    labels = grouped["Season"].tolist()
-    values = grouped[stat].tolist()
-
-    return jsonify({"labels": labels, "values": values})
-
+    return jsonify({
+        "labels": grouped["Season"].tolist(),
+        "values": grouped[stat].tolist()
+    })
 
 @app.route('/summary')
 def summary():
-    hero = request.args.get("hero")
-    season = request.args.get("season")
+    hero = request.args.get("hero", "All Heroes")
+    season = request.args.get("season", "All Seasons")
+    role = request.args.get("role", "All Roles")
     stat = request.args.get("stat")
 
-    # Filter your dataframe based on inputs
+    if not stat:
+        return jsonify({"error": "Missing filter values!"}), 400
+
+    # Filter the dataframe
     df_filtered = df.copy()
     if hero != "All Heroes":
         df_filtered = df_filtered[df_filtered["Hero"] == hero]
     if season != "All Seasons":
         df_filtered = df_filtered[df_filtered["Season"] == season]
+    if role != "All Roles":
+        df_filtered = df_filtered[df_filtered["Role"] == role]
 
-    values = df_filtered[stat].dropna().values
-
-    if len(values) == 0:
+    if df_filtered.empty or df_filtered[stat].dropna().empty:
         return jsonify({"error": "No data"})
 
-    summary = {
-        "min": float(np.min(values)),
-        "q1": float(np.percentile(values, 25)),
-        "median": float(np.percentile(values, 50)),
-        "q3": float(np.percentile(values, 75)),
-        "max": float(np.max(values))
+    # Use pandas describe to get summary stats
+    desc = df_filtered[stat].describe()  # returns a Series
+
+    # Format the stats: round to 2 decimals and add commas for large numbers
+    def format_number(x):
+        if pd.isna(x):
+            return None
+        if isinstance(x, (int, float)):
+            return f"{x:,.2f}"
+        return x
+
+    summary_stats = {
+        "count": int(desc["count"]),
+        "mean": format_number(desc["mean"]),
+        "std": format_number(desc["std"]),
+        "min": int(desc["min"]),
+        "q1": int(desc["25%"]),
+        "median": int(desc["50%"]),
+        "q3": int(desc["75%"]),
+        "max": int(desc["max"])
     }
-    return jsonify(summary)
-    
+
+    return jsonify(summary_stats)
 
 if __name__ == "__main__":
     app.run(debug=True)

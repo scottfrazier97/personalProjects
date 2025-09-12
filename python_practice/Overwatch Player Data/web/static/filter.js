@@ -132,6 +132,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         summaryDiv.innerHTML = `
                             <h5>Five-Number Summary (${stat})</h5>
                             <ul>
+                                <li>Count: ${data.count}</li><br>
+                                <li>Mean: ${data.mean}</li><br>
+                                <li>StdDev: ${data.std}</li><br>
                                 <li>Min: ${data.min}</li><br>
                                 <li>Q1: ${data.q1}</li><br>
                                 <li>Median: ${data.median}</li><br>
