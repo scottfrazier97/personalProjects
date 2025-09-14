@@ -66,41 +66,43 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Update dependent filters (season & stat) based on hero ---
     function updateDependentFilters() {
-        const hero = heroSelect.value;
-        if (!hero) return;
+        const hero = heroSelect.value || "All Heroes";
+        const role = roleSelect.value || "All Roles";
+        const season = seasonSelect.value || "All Seasons";
 
-        fetch(`/options?hero=${encodeURIComponent(hero)}`)
-            .then(response => response.json())
+        fetch(`/options?hero=${encodeURIComponent(hero)}&role=${encodeURIComponent(role)}&season=${encodeURIComponent(season)}`)
+            .then(resp => resp.json())
             .then(data => {
-                // Roles
-                seasonSelect.innerHTML = "";
-                data.roles.forEach(roles => {
-                    const opt = document.createElement("option");
-                    opt.value = roles;
-                    opt.textContent = roles;
-                    roleSelect.appendChild(opt);
-                });
+                
+                // Helper function to populate dropdown while preserving selection
+                function populateDropdown(select, options, currentValue) {
+                    select.innerHTML = ""; // clear existing options
+                    options.forEach(optValue => {
+                        const opt = document.createElement("option");
+                        opt.value = optValue;
+                        opt.textContent = optValue;
+                        if (optValue === currentValue) {
+                            opt.selected = true; // preserve current selection
+                        }
+                        select.appendChild(opt);
+                    });
+                }
 
-                // Seasons
-                seasonSelect.innerHTML = "";
-                data.seasons.forEach(season => {
-                    const opt = document.createElement("option");
-                    opt.value = season;
-                    opt.textContent = season;
-                    seasonSelect.appendChild(opt);
-                });
+                // Populate all dropdowns
+                populateDropdown(heroSelect, data.heroes, heroSelect.value);
+                populateDropdown(roleSelect, data.roles, roleSelect.value);
+                populateDropdown(seasonSelect, data.seasons, seasonSelect.value);
+                populateDropdown(statSelect, data.stats, statSelect.value);
 
-                // Stats
-                statSelect.innerHTML = "";
-                data.stats.forEach(stat => {
-                    const opt = document.createElement("option");
-                    opt.value = stat;
-                    opt.textContent = stat;
-                    statSelect.appendChild(opt);
-                });
             })
             .catch(err => console.error("Error fetching dependent filters:", err));
-    }
+    };
+
+
+    // --- Add event listeners to make filters dependent ---
+    [heroSelect, roleSelect, seasonSelect].forEach(select => {
+        select.addEventListener("change", updateDependentFilters);
+    });
 
     // --- Form submission using AJAX (updates text, chart, + summary) ---
     form.addEventListener('submit', function(e) {
@@ -108,21 +110,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const hero = heroSelect.value;
         const season = seasonSelect.value;
-        const stat = statSelect.value;
         const role = roleSelect.value;
+        const stat = statSelect.value;
 
-        // Update text result
+        // --- Fetch filter result ---
         fetch(`/filter?hero=${encodeURIComponent(hero)}&season=${encodeURIComponent(season)}&role=${encodeURIComponent(role)}&stat=${encodeURIComponent(stat)}`)
             .then(response => response.text())
             .then(data => {
                 resultDiv.textContent = data;
+
+                // Re-run updateDependentFilters after fetch
+                updateDependentFilters(); // this will rebuild all dropdowns
             })
             .catch(err => {
                 resultDiv.textContent = 'Error fetching data';
                 console.error(err);
             });
 
-        // Update chart + five-number summary
+        // --- Fetch chart and summary as before ---
         fetch(`/chart_data?hero=${encodeURIComponent(hero)}&role=${encodeURIComponent(role)}&stat=${encodeURIComponent(stat)}`)
             .then(response => response.json())
             .then(data => {
@@ -130,35 +135,6 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(err => console.error("Error fetching chart data:", err));
 
-        const summaryDiv = document.getElementById('summary');
-        if (season !== "All Seasons") {
-            if (summaryDiv) {
-                summaryDiv.innerHTML = `<p>Please select 'All Seasons' in the Season filter to see the five-number summary.</p>`;
-            }
-        } else {
-        fetch(`/summary?hero=${encodeURIComponent(hero)}&season=${encodeURIComponent(season)}&role=${encodeURIComponent(role)}&stat=${encodeURIComponent(stat)}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (summaryDiv && !data.error) {
-                        summaryDiv.innerHTML = `
-                            <h5>Five-Number Summary (${stat})</h5>
-                            <ul>
-                                <li>Count: ${data.count}</li><br>
-                                <li>Mean: ${data.mean}</li><br>
-                                <li>StdDev: ${data.std}</li><br>
-                                <li>Min: ${data.min}</li><br>
-                                <li>Q1: ${data.q1}</li><br>
-                                <li>Median: ${data.median}</li><br>
-                                <li>Q3: ${data.q3}</li><br>
-                                <li>Max: ${data.max}</li>
-                            </ul>
-                        `;
-                    } else if (summaryDiv && data.error) {
-                        summaryDiv.innerHTML = `<p>No data available for this selection</p>`;
-                    }
-                })
-                .catch(err => console.error("Error fetching summary:", err));
-        }
     });
 
     // --- Initialize on page load ---
