@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const heroImage = document.getElementById('heroImage');
     const seasonSelect = document.getElementById('season');
     const statSelect = document.getElementById('stat');
+    const roleSelect = document.getElementById('role');
 
     // --- CHART.js setup ---
     let chartInstance = null;
@@ -68,9 +69,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const hero = heroSelect.value;
         if (!hero) return;
 
-        fetch(`/filter_options?hero=${encodeURIComponent(hero)}`)
+        fetch(`/options?hero=${encodeURIComponent(hero)}`)
             .then(response => response.json())
             .then(data => {
+                // Roles
+                seasonSelect.innerHTML = "";
+                data.roles.forEach(roles => {
+                    const opt = document.createElement("option");
+                    opt.value = roles;
+                    opt.textContent = roles;
+                    roleSelect.appendChild(opt);
+                });
+
                 // Seasons
                 seasonSelect.innerHTML = "";
                 data.seasons.forEach(season => {
@@ -99,9 +109,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const hero = heroSelect.value;
         const season = seasonSelect.value;
         const stat = statSelect.value;
+        const role = roleSelect.value;
 
         // Update text result
-        fetch(`/filter?hero=${encodeURIComponent(hero)}&season=${encodeURIComponent(season)}&stat=${encodeURIComponent(stat)}`)
+        fetch(`/filter?hero=${encodeURIComponent(hero)}&season=${encodeURIComponent(season)}&role=${encodeURIComponent(role)}&stat=${encodeURIComponent(stat)}`)
             .then(response => response.text())
             .then(data => {
                 resultDiv.textContent = data;
@@ -112,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
         // Update chart + five-number summary
-        fetch(`/chart_data?hero=${encodeURIComponent(hero)}&season=${encodeURIComponent(season)}&stat=${encodeURIComponent(stat)}`)
+        fetch(`/chart_data?hero=${encodeURIComponent(hero)}&role=${encodeURIComponent(role)}&stat=${encodeURIComponent(stat)}`)
             .then(response => response.json())
             .then(data => {
                 updateChart(data.labels, data.values, hero, stat);
@@ -125,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 summaryDiv.innerHTML = `<p>Please select 'All Seasons' in the Season filter to see the five-number summary.</p>`;
             }
         } else {
-            fetch(`/summary?hero=${encodeURIComponent(hero)}&season=${encodeURIComponent(season)}&stat=${encodeURIComponent(stat)}`)
+        fetch(`/summary?hero=${encodeURIComponent(hero)}&season=${encodeURIComponent(season)}&role=${encodeURIComponent(role)}&stat=${encodeURIComponent(stat)}`)
                 .then(response => response.json())
                 .then(data => {
                     if (summaryDiv && !data.error) {

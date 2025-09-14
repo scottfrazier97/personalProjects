@@ -44,13 +44,7 @@ def filter_data():
         total = f"{total:,}"
 
     # Build label dynamically based on filters
-    labels = []
-    if hero != "All Heroes":
-        labels.append(hero)
-    if season != "All Seasons":
-        labels.append(season)
-    if role != "All Roles":
-        labels.append(role)
+    labels = [hero, role, season]
 
     label_str = " - ".join(labels) if labels else "All Data"
     return f"{label_str} - {stat}: {total}"
@@ -71,8 +65,8 @@ def get_options():
     if role and role != "All Roles":
         filtered = filtered[filtered["Role"] == role]
 
-    seasons = sorted(filtered["Season"].dropna().unique().tolist())
-    roles = sorted(filtered["Role"].dropna().unique().tolist())
+    seasons =  ["All Seasons"] + sorted(filtered["Season"].dropna().unique().tolist())
+    roles =  ["All Roles"] + sorted(filtered["Role"].dropna().unique().tolist())
     stats = [col for col in filtered.columns if col not in ["Hero", "Season", "Role"] and filtered[col].notna().any()]
 
     return jsonify({"seasons": seasons, "roles": roles, "stats": stats})
