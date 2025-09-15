@@ -24,7 +24,7 @@
                 <form id="filterForm" method="get" class="p-4 border rounded shadow bg-light">
 
                     <div class="text-center mb-3">
-                        <img id="heroImage" src="" alt="Hero Image" class="img-fluid" style="border-radius:10px; margin-bottom:20px;">
+                        <img id="heroImage" src="" alt="Hero Image" class="img-fluid">
                         <div id="result" style="font-weight:bold;"></div>
                     </div>
 
@@ -64,11 +64,13 @@
                         </select>
                     </div>
 
-                    <div class="text-center mt-3">
-                        <button id="show-button" type="submit" class="btn btn-primary btn-lg">Show</button>
+                    <div class="button-group text-center mt-3">
+                        <button id="show-button" type="submit" class="btn btn-primary btn-lg me-2">Submit</button>
+                        <button id="clearFilters" type="submit" class="btn btn-primary btn-lg">Clear</button>
                     </div>
 
                 </form>
+                
             </div>
 
             <div class="col-md-9">

@@ -53,6 +53,40 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    function updateDropdown(selectEl, allOptions, validOptions, currentValue) {
+        selectEl.innerHTML = "";
+
+        // Separate the "All ..." option
+        const allOption = allOptions.find(opt => opt.startsWith("All"));
+        const otherOptions = allOptions.filter(opt => opt !== allOption);
+
+        // Split remaining into valid/invalid
+        const validList = otherOptions.filter(opt => validOptions.includes(opt)).sort();
+        const invalidList = otherOptions.filter(opt => !validOptions.includes(opt)).sort();
+
+        // Build final array: "All ..." first, then valid, then invalid
+        const sorted = [allOption, ...validList, ...invalidList];
+
+        sorted.forEach(optValue => {
+            const opt = document.createElement("option");
+            opt.value = optValue;
+            opt.textContent = optValue;
+
+            // Disable if not valid and not "All ..."
+            if (optValue !== allOption && !validOptions.includes(optValue)) {
+                opt.disabled = true;
+                opt.style.color = "#999";
+            }
+
+            // Preserve current selection
+            if (optValue === currentValue) {
+                opt.selected = true;
+            }
+
+            selectEl.appendChild(opt);
+        });
+    }
+
     // --- Update hero image when selection changes ---
     heroSelect.addEventListener('change', function() {
         if (heroSelect.value) {
@@ -66,37 +100,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Update dependent filters (season & stat) based on hero ---
     function updateDependentFilters() {
-        const hero = heroSelect.value || "All Heroes";
-        const role = roleSelect.value || "All Roles";
-        const season = seasonSelect.value || "All Seasons";
+        const hero = heroSelect.value;
+        const role = roleSelect.value;
+        const season = seasonSelect.value;
+        const stat = statSelect.value;
 
         fetch(`/options?hero=${encodeURIComponent(hero)}&role=${encodeURIComponent(role)}&season=${encodeURIComponent(season)}`)
-            .then(resp => resp.json())
+            .then(response => response.json())
             .then(data => {
-                
-                // Helper function to populate dropdown while preserving selection
-                function populateDropdown(select, options, currentValue) {
-                    select.innerHTML = ""; // clear existing options
-                    options.forEach(optValue => {
-                        const opt = document.createElement("option");
-                        opt.value = optValue;
-                        opt.textContent = optValue;
-                        if (optValue === currentValue) {
-                            opt.selected = true; // preserve current selection
-                        }
-                        select.appendChild(opt);
-                    });
-                }
+                // Heroes
+                updateDropdown(heroSelect, data.heroes.all, data.heroes.valid, hero);
 
-                // Populate all dropdowns
-                populateDropdown(heroSelect, data.heroes, heroSelect.value);
-                populateDropdown(roleSelect, data.roles, roleSelect.value);
-                populateDropdown(seasonSelect, data.seasons, seasonSelect.value);
-                populateDropdown(statSelect, data.stats, statSelect.value);
+                // Roles
+                updateDropdown(roleSelect, data.roles.all, data.roles.valid, role);
 
+                // Seasons
+                updateDropdown(seasonSelect, data.seasons.all, data.seasons.valid, season);
+
+                // Stats (always fully refreshed)
+                statSelect.innerHTML = "";
+                data.stats.forEach(statOpt => {
+                    const opt = document.createElement("option");
+                    opt.value = statOpt;
+                    opt.textContent = statOpt;
+                    if (statOpt === stat) {
+                        opt.selected = true;
+                    }
+                    statSelect.appendChild(opt);
+                });
             })
             .catch(err => console.error("Error fetching dependent filters:", err));
-    };
+    }
 
 
     // --- Add event listeners to make filters dependent ---
@@ -137,7 +171,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     });
 
-    // --- Initialize on page load ---
+    // --- Clear Filters button ---
+    document.getElementById("clearFilters").addEventListener("click", function () {
+        // Reset dropdowns to first option (usually "All ...")
+        heroSelect.selectedIndex = 0;
+        roleSelect.selectedIndex = 0;
+        seasonSelect.selectedIndex = 0;
+        statSelect.selectedIndex = 0;
+
+        heroImage.src = `/static/images/All Heroes.png`
+
+        // Re-fetch default options (like on initial load)
+        updateDependentFilters();
+
+        // Clear result and chart
+        resultDiv.textContent = "";
+        if (chartInstance) {
+            chartInstance.destroy();
+            chartInstance = null;
+        }
+
+        // Clear summary
+        const summaryDiv = document.getElementById("summary");
+        if (summaryDiv) {
+            summaryDiv.innerHTML = "";
+        }
+    });
+
+        // --- Initialize on page load ---
     if (heroSelect.value) {
         heroImage.src = `/static/images/${heroSelect.value}.png`;
         heroImage.style.display = 'inline-block';

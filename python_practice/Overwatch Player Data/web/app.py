@@ -50,41 +50,48 @@ def get_options():
     hero = request.args.get("hero")
     season = request.args.get("season")
     role = request.args.get("role")
-    
+
     filtered = df.copy()
-    
-    # Filter by Hero and Role, but **not by Season** when generating seasons
-    if hero and hero != "All Heroes":
-        filtered_for_seasons = filtered[filtered["Hero"] == hero]
-    else:
-        filtered_for_seasons = filtered.copy()
+
+    # Only apply filters on dimensions NOT currently being updated
+    # We'll return valid options for all dropdowns independently
+
+    # Hero options depend on Role and Season only (not Hero itself)
+    hero_filtered = filtered.copy()
     if role and role != "All Roles":
-        filtered_for_seasons = filtered_for_seasons[filtered_for_seasons["Role"] == role]
-    
-    # Filter by Hero and Season, but not by Role when generating roles
+        hero_filtered = hero_filtered[hero_filtered["Role"] == role]
+    if season and season != "All Seasons":
+        hero_filtered = hero_filtered[hero_filtered["Season"] == season]
+    heroes_valid = sorted(hero_filtered["Hero"].dropna().unique().tolist())
+    heroes_all = ["All Heroes"] + sorted(df["Hero"].unique().tolist())
+
+    # Role options depend on Hero and Season only
+    role_filtered = filtered.copy()
     if hero and hero != "All Heroes":
-        filtered_for_roles = filtered[filtered["Hero"] == hero]
-    else:
-        filtered_for_roles = filtered.copy()
+        role_filtered = role_filtered[role_filtered["Hero"] == hero]
     if season and season != "All Seasons":
-        filtered_for_roles = filtered_for_roles[filtered_for_roles["Season"] == season]
-    
-    # Filter by Role and Season, but not by Hero when generating heroes
+        role_filtered = role_filtered[role_filtered["Season"] == season]
+    roles_valid = sorted(role_filtered["Role"].dropna().unique().tolist())
+    roles_all = ["All Roles"] + sorted(df["Role"].unique().tolist())
+
+    # Season options depend on Hero and Role only
+    season_filtered = filtered.copy()
+    if hero and hero != "All Heroes":
+        season_filtered = season_filtered[season_filtered["Hero"] == hero]
     if role and role != "All Roles":
-        filtered_for_heroes = filtered[filtered["Role"] == role]
-    else:
-        filtered_for_heroes = filtered.copy()
-    if season and season != "All Seasons":
-        filtered_for_heroes = filtered_for_heroes[filtered_for_heroes["Season"] == season]
+        season_filtered = season_filtered[season_filtered["Role"] == role]
+    seasons_valid = sorted(season_filtered["Season"].dropna().unique().tolist())
+    seasons_all = ["All Seasons"] + sorted(df["Season"].unique().tolist())
 
-    heroes = ["All Heroes"] + sorted(filtered_for_heroes["Hero"].dropna().unique().tolist())
-    roles = ["All Roles"] + sorted(filtered_for_roles["Role"].dropna().unique().tolist())
-    seasons = ["All Seasons"] + sorted(filtered_for_seasons["Season"].dropna().unique().tolist())
+    # Stats always fully available
+    stats = [col for col in df.columns if col not in ["Hero", "Season", "Role"] and filtered[col].notna().any()]
 
-    stats = [col for col in filtered.columns if col not in ["Hero", "Season", "Role"] and filtered[col].notna().any()]
-
-    return jsonify({"heroes": heroes, "roles": roles, "seasons": seasons, "stats": stats})
-
+    return jsonify({
+        "heroes": {"all": heroes_all, "valid": heroes_valid},
+        "roles": {"all": roles_all, "valid": roles_valid},
+        "seasons": {"all": seasons_all, "valid": seasons_valid},
+        "stats": stats
+    })
 
 @app.route("/chart_data")
 def chart_data():
