@@ -203,5 +203,5 @@ document.addEventListener('DOMContentLoaded', function() {
         heroImage.src = `/static/images/${heroSelect.value}.png`;
         heroImage.style.display = 'inline-block';
         updateDependentFilters();
-    }
+        }
 });
