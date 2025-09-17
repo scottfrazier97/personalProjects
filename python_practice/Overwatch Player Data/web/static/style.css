@@ -107,7 +107,7 @@ ul li {
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.1);
+    transform: translate(-50%, -50%) scale(1.15);
     opacity: 0;
   }
 }
@@ -156,7 +156,7 @@ ul li {
     opacity: 1;
   }
   100% {
-    transform: translate(-50%, -50%) scale(1.25);
+    transform: translate(-50%, -50%) scale(1.15);
     opacity: 0;
   }
 }

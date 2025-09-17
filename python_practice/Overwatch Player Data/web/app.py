@@ -58,28 +58,38 @@ def get_options():
 
     # Hero options depend on Role and Season only (not Hero itself)
     hero_filtered = filtered.copy()
+    
     if role and role != "All Roles":
         hero_filtered = hero_filtered[hero_filtered["Role"] == role]
+
     if season and season != "All Seasons":
         hero_filtered = hero_filtered[hero_filtered["Season"] == season]
+        
     heroes_valid = sorted(hero_filtered["Hero"].dropna().unique().tolist())
     heroes_all = ["All Heroes"] + sorted(df["Hero"].unique().tolist())
 
     # Role options depend on Hero and Season only
+
     role_filtered = filtered.copy()
+
     if hero and hero != "All Heroes":
         role_filtered = role_filtered[role_filtered["Hero"] == hero]
+
     if season and season != "All Seasons":
         role_filtered = role_filtered[role_filtered["Season"] == season]
+
     roles_valid = sorted(role_filtered["Role"].dropna().unique().tolist())
     roles_all = ["All Roles"] + sorted(df["Role"].unique().tolist())
 
     # Season options depend on Hero and Role only
     season_filtered = filtered.copy()
+
     if hero and hero != "All Heroes":
         season_filtered = season_filtered[season_filtered["Hero"] == hero]
+
     if role and role != "All Roles":
         season_filtered = season_filtered[season_filtered["Role"] == role]
+
     seasons_valid = sorted(season_filtered["Season"].dropna().unique().tolist())
     seasons_all = ["All Seasons"] + sorted(df["Season"].unique().tolist())
 
