@@ -108,23 +108,53 @@ def chart_data():
     hero = request.args.get("hero", "All Heroes")
     role = request.args.get("role", "All Roles")
     stat = request.args.get("stat")
+    season = request.args.get("season", "All Seasons")
 
     if not stat:
         return jsonify({"error": "Missing filters"}), 400
 
     filtered = df.copy()
+
+    if season != "All Seasons":
+        filtered = filtered[filtered["Season"] == season]
+
+    # If user selects a specific Hero → one dataset (that hero’s values per season)
     if hero != "All Heroes":
-        filtered = filtered[filtered["Hero"] == hero]
+        grouped = filtered.groupby("Season")[stat].sum().reset_index()
+        return jsonify({
+            "labels": grouped["Season"].tolist(),
+            "datasets": [{
+                "label": hero,
+                "data": grouped[stat].astype(float).tolist()
+            }]
+        })
+
+    # If "All Heroes" but specific Role → one dataset (that role’s values per season)
     if role != "All Roles":
-        filtered = filtered[filtered["Role"] == role]
+        grouped = filtered.groupby("Season")[stat].sum().reset_index()
+        return jsonify({
+            "labels": grouped["Season"].tolist(),
+            "datasets": [{
+                "label": role,
+                "data": grouped[stat].astype(float).tolist()
+            }]
+        })
 
-    grouped = filtered.groupby("Season")[stat].sum().reset_index()
-    grouped = grouped.sort_values("Season")
+    # If "All Heroes" + "All Roles" → show grouped by Role
+    grouped = filtered.groupby(["Season", "Role"])[stat].sum().reset_index()
+    labels = sorted(filtered["Season"].unique())
+    datasets = []
 
-    return jsonify({
-        "labels": grouped["Season"].tolist(),
-        "values": grouped[stat].tolist()
-    })
+    for role_name in grouped["Role"].unique():
+        role_data = grouped[grouped["Role"] == role_name]
+        datasets.append({
+            "label": role_name,
+            "data": [float(role_data[role_data["Season"] == s][stat].sum()) if s in role_data["Season"].values else 0 for s in labels]
+        })
+        
+    return jsonify({"labels": labels, "datasets": datasets})
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

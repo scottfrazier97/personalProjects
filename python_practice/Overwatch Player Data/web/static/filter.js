@@ -11,35 +11,33 @@ document.addEventListener('DOMContentLoaded', function() {
     const roleSelect = document.getElementById('role');
 
     // --- CHART.js setup ---
-    let chartInstance = null;
-    function updateChart(seasons, values, hero, stat) {
+    let chartInstance = null; 
+    function updateChart(chartData) {
         const ctx = document.getElementById('statChart').getContext('2d');
         if (chartInstance) {
             chartInstance.destroy();
         }
+
         chartInstance = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
-                labels: seasons,
-                datasets: [{
-                    label: `${hero} - ${stat}`,
-                    data: values,
-                    borderColor: '#0d6efd',
-                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
-                    tension: 0.3
-                }]
+                labels: chartData.labels, // e.g. ["Season 01", "Season 02", ...]
+                datasets: chartData.datasets.map((ds, i) => ({
+                    label: ds.label,        // Hero or Role
+                    data: ds.data,          // Values for each season
+                    backgroundColor: chartColors[i % chartColors.length],
+                    borderRadius: 4
+                }))
             },
             options: {
-                plugins: {
-                    legend: {
-                        labels: {
-                            usePointStyle: true,
-                            pointStyle: 'line'
-                        }
-                    },
-                },
                 responsive: true,
+                plugins: {
+                    legend: { position: 'top' }
+                },
                 scales: {
+                    x: {
+                        stacked: false,  // keep side-by-side grouping
+                    },
                     y: {
                         beginAtZero: true,
                         ticks: {
@@ -52,6 +50,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Some preset colors for datasets
+    const chartColors = [
+        "#0d6efd", "#fd7e14", "#343a40"
+    ];
 
     function updateDropdown(selectEl, allOptions, validOptions, currentValue) {
         selectEl.innerHTML = "";
@@ -161,11 +164,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error(err);
             });
 
-        // --- Fetch chart and summary as before ---
-        fetch(`/chart_data?hero=${encodeURIComponent(hero)}&role=${encodeURIComponent(role)}&stat=${encodeURIComponent(stat)}`)
+        // --- Fetch chart ---
+// --- Fetch chart ---
+        fetch(`/chart_data?hero=${encodeURIComponent(hero)}&role=${encodeURIComponent(role)}&season=${encodeURIComponent(season)}&stat=${encodeURIComponent(stat)}`)
             .then(response => response.json())
             .then(data => {
-                updateChart(data.labels, data.values, hero, stat);
+                if (!data.datasets || data.datasets.length === 0) {
+                    console.warn("No chart data available");
+                    return;
+                }
+                updateChart(data);
             })
             .catch(err => console.error("Error fetching chart data:", err));
 
