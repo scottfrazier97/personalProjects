@@ -32,19 +32,24 @@ def roman_numeral_conversion():
     user_input = input("Input a roman numeral: ").strip().upper()
 
     total = 0
+    i = 0
 
-    for letter in range(len(user_input)):
+    while i < len(user_input):
         
-        current = rn[user_input[letter]]
+        current_value = rn[user_input[i]]
         
-        total += rn.get(letter)
-    
-    if "IV" in user_input or "IX" in user_input:
-        total -= 1
-    if "XL" in user_input or "XC" in user_input:
-        total -= 10
-    if "CD" in user_input or "CM" in user_input:
-        total -= 100
+        # Look ahead to the next character (if there is one)
+        if (i + 1) < len(user_input):
+            next_value = rn[user_input[i + 1]]
+
+            # If the next value is larger, subtract current instead of adding
+            if current_value < next_value:
+                total += next_value - current_value
+                i += 2
+                continue #Skip normal addition below when necessary
+
+        total += current_value
+        i += 1
 
     print(total)
 
