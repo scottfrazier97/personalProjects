@@ -1,21 +1,31 @@
 # Write a function to find the longest common prefix string amongst an array of strings.
 # If there is no common prefix, return an empty string "".
 
-strs = ["flower","flow","flight"]
-#strs = ["dog","racecar","car"]
+def longest_common_prefix(strs):
+    if not strs:
+        return ""
 
-prefixes = ""
+    prefix = ""
 
-i = 0
+    # loop over character positions in the first word
+    for i in range(len(strs[0])):
+        char = strs[0][i]
 
-for item in strs:
+        # check this character against all the other words
+        for word in strs[1:]:
+            # if index out of range or mismatch → stop
+            if i >= len(word) or word[i] != char:
+                return prefix
 
-    if item[i] == strs[-1][i]:
-        prefixes += item[i]
-        i += 1
+        # if no mismatch, add the character to the prefix
+        prefix += char
 
-    else:
-        if len(prefixes) > 0:
-            print(f"Longest prefix: {prefixes}")
-        else:
-            print("No prefix found")
+    return prefix
+
+
+# Examples
+print(longest_common_prefix(["flower", "flow", "flight"]))
+print(longest_common_prefix(["dog", "racecar", "car"])) 
+
+
+
