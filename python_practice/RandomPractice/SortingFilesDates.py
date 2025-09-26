@@ -2,7 +2,7 @@ import os
 import shutil
 import re
 
-root_folder = r'C:\Users\first.last\Desktop\OuterLayer'
+root_folder = r'C:\\Users\\first.last\\Desktop\\OuterLayer'
 
 def copy_files_based_on_date(root_folder):    
     # Regex pattern to extract year and month from the filename (handles additional text before the date)    

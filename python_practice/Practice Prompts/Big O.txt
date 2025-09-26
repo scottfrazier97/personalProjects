@@ -1,0 +1,91 @@
+n = number of items you’re working with
+
+O(1) – Constant time
+    The amount of work does not grow as n grows.
+
+    Example: checking if a dictionary has a key → no matter if the dict has 10 items or 10 million items, the check takes about the same time.
+
+    Think of this as: “One step, always.”
+
+O(n) – Linear time
+
+    The amount of work grows proportionally to n.
+
+    Example: looping once through a list of n items.
+
+    If n doubles, the work doubles.
+
+    Think of this as: “Do 1 step per item.”
+
+O(n²) – Quadratic time
+
+    The amount of work grows with the square of n.
+
+    Example: for every item, compare it with every other item.
+
+    If n doubles, the work grows 4×. If n triples, the work grows 9×.
+
+    Think of this as: “Do 1 step per item, for every item.”
+
+
+1. Big O is about growth, not exact speed
+
+    It doesn’t measure seconds or milliseconds.
+
+    It answers: “If I make the input 10× bigger, how much slower does my algorithm get?”
+
+    An O(n²) algorithm might be faster than an O(n) one for very small inputs, but it won’t scale well.
+
+2. Common complexities you’ll see
+
+    O(1) – constant (hash lookups, indexing into an array)
+
+    O(log n) – logarithmic (binary search, balanced trees)
+
+    O(n) – linear (single loop over the input)
+
+    O(n log n) – “almost linear” (efficient sorts like mergesort, quicksort)
+
+    O(n²) – quadratic (nested loops over the data)
+
+    O(2ⁿ), O(n!) – exponential/factorial (brute force over combinations → usually intractable)
+
+3. Best, Worst, and Average Case
+
+    Sometimes we care about worst case (e.g., guaranteeing a system won’t freeze).
+
+    Other times average case is fine (e.g., hashing: O(1) on average, but O(n) in the worst case if all items collide).
+
+4. Space Complexity
+
+    Not just time matters. Big O also describes how much memory an algorithm uses.
+
+    Example: Using a set to track seen items makes things faster (O(n) vs O(n²)), but it costs extra O(n) space.
+
+5. Tradeoffs
+
+    Algorithms are often about balancing:
+
+    Time vs Space (faster lookups might need more memory).
+
+    Simplicity vs Efficiency (sometimes O(n²) code is simpler, and fine if n is small).
+
+6. Constant factors are ignored
+
+    Big O drops “details” like 2n, n/2, etc.
+
+    O(2n) = O(n).
+
+    So Big O isn’t about micro-optimizations, but about scalability.
+
+7. Intuition for growth
+
+    Rough idea of how bad things get as n grows:
+
+    n = 10 → O(n²) is fine.
+
+    n = 1,000 → O(n²) is sluggish.
+
+    n = 1,000,000 → O(n²) is practically impossible.
+
+    This is why choosing the right algorithm matters at scale.
