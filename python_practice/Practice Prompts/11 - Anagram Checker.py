@@ -36,7 +36,7 @@ def anagram_checker(word1, word2):
 
 
 
-anagram_checker("fried", "fired")
+anagram_checker("listen", "silent")
         
 
 ## !!!SUPER-ULTRA-MEGA-PYTHONIC VERSION!!!
