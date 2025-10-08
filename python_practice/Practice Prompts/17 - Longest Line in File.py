@@ -21,5 +21,4 @@ with open(html_path, 'r', encoding="utf8") as file:
         else:
             continue
 
-
 print(f"Line number: {longest_line_number}\nLongest line in txt file:{longest_line}")
