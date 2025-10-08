@@ -9,4 +9,4 @@ def uniqueness_check(prompt):
     else:
         print("No duplicate values found")
 
-uniqueness_check("")
+uniqueness_check("Hello")
