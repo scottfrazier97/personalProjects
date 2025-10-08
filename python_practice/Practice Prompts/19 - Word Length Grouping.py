@@ -1,4 +1,4 @@
-# Given a list of words, group them by their length.
+# Given a list of words, group them by their length
 
 words =  ["cat","dog","apple","pear"]
 
