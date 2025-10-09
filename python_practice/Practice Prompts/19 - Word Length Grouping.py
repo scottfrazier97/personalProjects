@@ -21,4 +21,5 @@ def word_grouping(wordlist):
     return sorted_tracker
 
 result = word_grouping(words)
+
 print(result)
