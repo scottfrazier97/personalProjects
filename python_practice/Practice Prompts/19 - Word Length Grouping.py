@@ -18,7 +18,8 @@ def word_grouping(wordlist):
 
     sorted_tracker = dict(sorted(tracker.items(), key=lambda item: item[0]))
 
-    return sorted_tracker
+    for k, v in sorted_tracker.items():
+        print(f"{k}: {v}")
 
 result = word_grouping(words)
 
