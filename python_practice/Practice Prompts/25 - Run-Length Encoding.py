@@ -25,5 +25,5 @@ def runlength_encoder(prompt):
         
     return "".join(temp_string_list)
 
-result = runlength_encoder("aabbbaa")      
+result = runlength_encoder("aabbbaaccdddd")      
 print(result)
