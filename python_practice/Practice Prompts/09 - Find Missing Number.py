@@ -16,8 +16,7 @@ def missing_numbers():
 
         if n == counter:
             counter += 1
-        else:
-            print(f"Missing: {counter}")
-            break
+
+    print(f"Missing: {counter}")
 
 missing_numbers()
