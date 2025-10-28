@@ -30,6 +30,7 @@ def csv_column_display(col):
         
 colvals, uniquecnt = csv_column_display("department")
 print("Column values:")
+
 for x in colvals:
     print(x)            
 print(f"Unique values: {uniquecnt}")
