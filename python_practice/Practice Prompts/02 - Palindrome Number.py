@@ -12,4 +12,4 @@ def palindrome_finder(num):
     else:
         print("Not a palindrome")
         
-palindrome_finder(1234565432)
+palindrome_finder(12345654321)
