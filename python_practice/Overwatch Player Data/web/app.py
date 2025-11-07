@@ -154,7 +154,5 @@ def chart_data():
         
     return jsonify({"labels": labels, "datasets": datasets})
 
-
-
 if __name__ == "__main__":
     app.run(debug=True)
