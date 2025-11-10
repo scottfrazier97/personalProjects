@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify
 from data_loader import load_data
-import pandas as pd
 
 app = Flask(__name__)
 df = load_data()
