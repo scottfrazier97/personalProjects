@@ -194,7 +194,18 @@ form {
   padding: 2rem;
 }
 
-/* Optional spacing improvement for rows */
-.row {
-  margin-bottom: 1rem;
+#chart-wrapper {
+    height: 100%;        /* allow full column height */
+    min-height: 500px;   /* ensures chart is never tiny */
+}
+
+#chart-area {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#statChart {
+    width: 100% !important;
+    height: 100% !important;
 }
