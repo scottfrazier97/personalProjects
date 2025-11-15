@@ -10,21 +10,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const statSelect = document.getElementById('stat');
     const roleSelect = document.getElementById('role');
 
-    // --- CHART.js setup ---
-    let chartInstance = null; 
-    function updateChart(chartData) {
-        const ctx = document.getElementById('statChart').getContext('2d');
-        if (chartInstance) {
-            chartInstance.destroy();
-        }
+    // Chart.js instances
+    let barChartInstance = null;
+    let lineChartInstance = null;
 
-        chartInstance = new Chart(ctx, {
+    // Chart colors (move here so it's available for all charts)
+    const chartColors = ["#0d6efd", "#fd7e14", "#343a40"];
+
+    // --- Update Bar Chart ---
+    function updateBarChart(chartData) {
+        const ctx = document.getElementById('statChart').getContext('2d');
+        if (barChartInstance) barChartInstance.destroy();
+
+        barChartInstance = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: chartData.labels, // e.g. ["Season 01", "Season 02", ...]
+                labels: chartData.labels,
                 datasets: chartData.datasets.map((ds, i) => ({
-                    label: ds.label,        // Hero or Role
-                    data: ds.data,          // Values for each season
+                    label: ds.label,
+                    data: ds.data,
                     backgroundColor: chartColors[i % chartColors.length],
                     borderRadius: 4
                 }))
@@ -32,19 +36,13 @@ document.addEventListener('DOMContentLoaded', function() {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'top' }
-                },
+                plugins: { legend: { position: 'top' } },
                 scales: {
-                    x: {
-                        stacked: false,  // keep side-by-side grouping
-                    },
+                    x: { stacked: false },
                     y: {
                         beginAtZero: true,
                         ticks: {
-                            callback: function(value) {
-                                return value.toLocaleString();
-                            }
+                            callback: value => value.toLocaleString()
                         }
                     }
                 }
@@ -52,23 +50,52 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Some preset colors for datasets
-    const chartColors = [
-        "#0d6efd", "#fd7e14", "#343a40"
-    ];
+    // --- Update Line Chart ---
+    function updateLineChart(chartData) {
+        const ctx = document.getElementById('lineChart').getContext('2d');
+        if (lineChartInstance) lineChartInstance.destroy();
 
+        lineChartInstance = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData.labels,
+                datasets: chartData.datasets.map((ds, i) => ({
+                    label: ds.label,
+                    data: ds.data,
+                    borderColor: chartColors[i % chartColors.length],
+                    backgroundColor: chartColors[i % chartColors.length],
+                    fill: false,
+                    tension: 0.3,
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }))
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'top' } },
+                scales: {
+                    x: { stacked: false },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: value => value.toLocaleString()
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // --- Update dependent dropdowns ---
     function updateDropdown(selectEl, allOptions, validOptions, currentValue) {
         selectEl.innerHTML = "";
 
-        // Separate the "All ..." option
         const allOption = allOptions.find(opt => opt.startsWith("All"));
         const otherOptions = allOptions.filter(opt => opt !== allOption);
 
-        // Split remaining into valid/invalid
         const validList = otherOptions.filter(opt => validOptions.includes(opt)).sort();
         const invalidList = otherOptions.filter(opt => !validOptions.includes(opt)).sort();
-
-        // Build final array: "All ..." first, then valid, then invalid
         const sorted = [allOption, ...validList, ...invalidList];
 
         sorted.forEach(optValue => {
@@ -76,22 +103,18 @@ document.addEventListener('DOMContentLoaded', function() {
             opt.value = optValue;
             opt.textContent = optValue;
 
-            // Disable if not valid and not "All ..."
             if (optValue !== allOption && !validOptions.includes(optValue)) {
                 opt.disabled = true;
                 opt.style.color = "#999";
             }
 
-            // Preserve current selection
-            if (optValue === currentValue) {
-                opt.selected = true;
-            }
+            if (optValue === currentValue) opt.selected = true;
 
             selectEl.appendChild(opt);
         });
     }
 
-    // --- Update hero image when selection changes ---
+    // --- Update hero image ---
     heroSelect.addEventListener('change', function() {
         if (heroSelect.value) {
             heroImage.src = `/static/images/${heroSelect.value}.png`;
@@ -102,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateDependentFilters();
     });
 
-    // --- Update dependent filters (season & stat) based on hero ---
+    // --- Update dependent filters ---
     function updateDependentFilters() {
         const hero = heroSelect.value;
         const role = roleSelect.value;
@@ -112,37 +135,27 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch(`/options?hero=${encodeURIComponent(hero)}&role=${encodeURIComponent(role)}&season=${encodeURIComponent(season)}`)
             .then(response => response.json())
             .then(data => {
-                // Heroes
                 updateDropdown(heroSelect, data.heroes.all, data.heroes.valid, hero);
-
-                // Roles
                 updateDropdown(roleSelect, data.roles.all, data.roles.valid, role);
-
-                // Seasons
                 updateDropdown(seasonSelect, data.seasons.all, data.seasons.valid, season);
 
-                // Stats (always fully refreshed)
                 statSelect.innerHTML = "";
                 data.stats.forEach(statOpt => {
                     const opt = document.createElement("option");
                     opt.value = statOpt;
                     opt.textContent = statOpt;
-                    if (statOpt === stat) {
-                        opt.selected = true;
-                    }
+                    if (statOpt === stat) opt.selected = true;
                     statSelect.appendChild(opt);
                 });
             })
             .catch(err => console.error("Error fetching dependent filters:", err));
     }
 
-
-    // --- Add event listeners to make filters dependent ---
     [heroSelect, roleSelect, seasonSelect].forEach(select => {
         select.addEventListener("change", updateDependentFilters);
     });
 
-    // --- Form submission using AJAX (updates text, chart, + summary) ---
+    // --- Handle form submission ---
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -151,66 +164,68 @@ document.addEventListener('DOMContentLoaded', function() {
         const role = roleSelect.value;
         const stat = statSelect.value;
 
-        // --- Fetch filter result ---
+        // Fetch result text
         fetch(`/filter?hero=${encodeURIComponent(hero)}&season=${encodeURIComponent(season)}&role=${encodeURIComponent(role)}&stat=${encodeURIComponent(stat)}`)
             .then(response => response.text())
             .then(data => {
                 resultDiv.textContent = data;
-
-                // Re-run updateDependentFilters after fetch
-                updateDependentFilters(); // this will rebuild all dropdowns
+                updateDependentFilters();
             })
             .catch(err => {
                 resultDiv.textContent = 'Error fetching data';
                 console.error(err);
             });
 
-        // --- Fetch chart ---
-// --- Fetch chart ---
+        // Fetch chart data
         fetch(`/chart_data?hero=${encodeURIComponent(hero)}&role=${encodeURIComponent(role)}&season=${encodeURIComponent(season)}&stat=${encodeURIComponent(stat)}`)
             .then(response => response.json())
             .then(data => {
-                if (!data.datasets || data.datasets.length === 0) {
-                    console.warn("No chart data available");
-                    return;
-                }
-                updateChart(data);
+                if (!data.datasets || data.datasets.length === 0) return;
+                updateBarChart(data);
+                updateLineChart(data);
             })
             .catch(err => console.error("Error fetching chart data:", err));
-
     });
 
-    // --- Clear Filters button ---
+    // --- Clear Filters ---
     document.getElementById("clearFilters").addEventListener("click", function () {
-        // Reset dropdowns to first option (usually "All ...")
-        heroSelect.selectedIndex = 0;
-        roleSelect.selectedIndex = 0;
-        seasonSelect.selectedIndex = 0;
-        statSelect.selectedIndex = 0;
+        [heroSelect, roleSelect, seasonSelect, statSelect].forEach(sel => sel.selectedIndex = 0);
+        heroImage.src = `/static/images/All Heroes.png`;
+        heroImage.style.display = 'inline-block';
 
-        heroImage.src = `/static/images/All Heroes.png`
-
-        // Re-fetch default options (like on initial load)
         updateDependentFilters();
-
-        // Clear result and chart
         resultDiv.textContent = "";
-        if (chartInstance) {
-            chartInstance.destroy();
-            chartInstance = null;
-        }
 
-        // Clear summary
+        if (barChartInstance) { barChartInstance.destroy(); barChartInstance = null; }
+        if (lineChartInstance) { lineChartInstance.destroy(); lineChartInstance = null; }
+
         const summaryDiv = document.getElementById("summary");
-        if (summaryDiv) {
-            summaryDiv.innerHTML = "";
-        }
+        if (summaryDiv) summaryDiv.innerHTML = "";
     });
 
-        // --- Initialize on page load ---
+    // --- Function to fetch chart data and update both charts ---
+    function loadCharts() {
+        const hero = heroSelect.value;
+        const season = seasonSelect.value;
+        const role = roleSelect.value;
+        const stat = statSelect.value;
+
+        fetch(`/chart_data?hero=${encodeURIComponent(hero)}&role=${encodeURIComponent(role)}&season=${encodeURIComponent(season)}&stat=${encodeURIComponent(stat)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.datasets || data.datasets.length === 0) return;
+                updateBarChart(data);
+                updateLineChart(data);
+            })
+            .catch(err => console.error("Error fetching chart data:", err));
+    }
+
+    // --- Initialize page ---
     if (heroSelect.value) {
         heroImage.src = `/static/images/${heroSelect.value}.png`;
         heroImage.style.display = 'inline-block';
-        updateDependentFilters();
-        }
+        updateDependentFilters(); // rebuild dropdowns
+        loadCharts();             // fetch and display chart data
+    }
+
 });
