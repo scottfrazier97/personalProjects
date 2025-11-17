@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let barChartInstance = null;
     let lineChartInstance = null;
 
-    // Chart colors (move here so it's available for all charts)
+    // Chart colors 
     const chartColors = ["#0d6efd", "#fd7e14", "#343a40"];
 
     // --- Update Bar Chart ---

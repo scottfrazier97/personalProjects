@@ -13,6 +13,15 @@ def home():
     stats = [col for col in df.columns if col not in ["Hero", "Season", "Role"]]
     return render_template("index.html", heroes=heroes, seasons=seasons, stats=stats, roles=roles)
 
+@app.route("/predictions")
+def predictions():
+    # If you need dropdowns later, you can pass them here
+    heroes = ["All Heroes"] + sorted(df["Hero"].unique().tolist())
+    stats = [col for col in df.columns if col not in ["Hero", "Season", "Role"]]
+    return render_template("predictions.html", heroes=heroes, stats=stats)
+
+
+
 @app.route("/filter")
 def filter_data():
     hero = request.args.get("hero", "All Heroes")
@@ -174,6 +183,40 @@ def chart_data():
         "labels": labels,
         "datasets": datasets
     })
+
+
+from ml_model import load_pipeline, predict
+import pandas as pd
+
+# --- Predict route ---
+@app.route("/predict", methods=["POST"])
+def predict_stat():
+    data = request.json
+    selected_stat = data.get("stat")  # dynamically chosen stat
+
+    if not selected_stat:
+        return jsonify({"error": "No stat selected"}), 400
+
+    # Load the pipeline corresponding to the selected stat
+    # Replace spaces in stat names for filename
+    pipeline_filename = f"models/pipeline_{selected_stat.replace(' ', '_')}.pkl"
+
+    try:
+        pipeline = load_pipeline(pipeline_filename)
+    except FileNotFoundError:
+        return jsonify({"error": f"Pipeline for '{selected_stat}' not found."}), 404
+
+    # Convert user input to DataFrame (must match features used in training)
+    df_new = pd.DataFrame([data])
+
+    try:
+        prediction = predict(pipeline, df_new)[0]
+    except Exception as e:
+        return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
+
+    return jsonify({"prediction": float(prediction)})
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
