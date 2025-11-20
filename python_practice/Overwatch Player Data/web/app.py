@@ -184,5 +184,18 @@ def chart_data():
         "datasets": datasets
     })
 
+
+# TABLE
+@app.route("/table")
+def table_page():
+    return render_template("table.html")  # HTML PAGE
+
+# Convert DF to list of dicts for fast JSON API use
+hero_stats_data = df.to_dict(orient="records")
+
+@app.route("/hero_stats")
+def hero_stats():
+    return jsonify(hero_stats_data)  # JSON API
+
 if __name__ == "__main__":
     app.run(debug=True)
