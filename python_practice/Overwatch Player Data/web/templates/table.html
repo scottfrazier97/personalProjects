@@ -22,29 +22,35 @@
         </div>
     </ul>
 
-    <div class="container d-flex flex-column mb-4" style="height: calc(100vh - 15vh);">
+    <div class="container d-flex flex-column mb-4" style="height: calc(100vh - 10vh);">
         <h1 class="mb-4 text-center" id="title-header"><i>Overwatch Insights - NinjaTacoooo</i></h1>
 
-            <div class="row flex-grow-1">
+        <div class="row flex-grow-1">
             <div class="col-12 d-flex flex-column">
-                <div class="table-responsive flex-grow-1">
-                    <table id="heroStatsTable" class="table table-striped table-bordered w-100">
-                        <thead>
-                            <tr>
-                                <th>Hero</th>
-                                <th>Role</th>
-                                <th>Season</th>
-                                <th>Games Played</th>
-                                <th>Games Won</th>
-                                <th>Damage Done</th>
-                                <th>Healing Done</th>
-                                <th>Eliminations</th>
-                                <th>Assists</th>
-                                <th>Deaths</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                <!-- Card container -->
+                <div class="card shadow flex-grow-1 d-flex flex-column p-3">
+                    <h3 class="card-title text-center mb-3">Hero Statistics</h3>
+                    
+                    <!-- Table wrapper -->
+                    <div class="table-responsive flex-grow-1">
+                        <table id="heroStatsTable" class="table table-striped table-bordered w-100">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Hero</th>
+                                    <th>Role</th>
+                                    <th>Season</th>
+                                    <th>Games Played</th>
+                                    <th>Games Won</th>
+                                    <th>Damage Done</th>
+                                    <th>Healing Done</th>
+                                    <th>Eliminations</th>
+                                    <th>Assists</th>
+                                    <th>Deaths</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -74,10 +80,12 @@
                 { data: "Assists" },
                 { data: "Deaths" }
             ],
-            scrollY: $('.table-responsive').height(),  // Dynamically use container height
+            scrollY: $('.table-responsive').height(), 
             scrollCollapse: true,
             paging: false,
-            info: false
+            info: false,
+            dom: '<"d-flex justify-content-end mb-2"f>rt'
+
         });
     });
     </script>
