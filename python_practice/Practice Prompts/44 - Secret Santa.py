@@ -2,10 +2,8 @@ def generate_pairs(prompt):
     
     import random
 
-    # Clean up names (strip whitespace)
     prompt = [name.strip() for name in prompt]
 
-    # Initialize the tracker dict
     tracker = {name: "" for name in prompt}
 
     for name in prompt:
