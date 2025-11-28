@@ -4,6 +4,11 @@
 # Lambda functions can take any number of arguments but only have one expression.
 # Syntax: lambda arguments: expression
 
+#A lambda function's expression is fundamentally limited to a single logical statement that evaluates 
+# and returns a value immediately. It means you can't use complex, multi-line control flow structures 
+# or explicit statements within it.
+
+
 lambda_function = lambda x: x + 10
 # Example usage of the lambda function
 result = lambda_function(5)
